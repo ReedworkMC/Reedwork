@@ -6,7 +6,7 @@
 
     <groupId>dev.okaj.paper</groupId>
     <artifactId>common</artifactId>
-    <version>1.0.0</version>
+    <version>1.1.0</version>
 
     <name>PaperCommon</name>
 
@@ -35,6 +35,10 @@
             <url>https://repo.papermc.io/repository/maven-public/</url>
         </repository>
         <repository>
+            <id>opencollab-snapshot</id>
+            <url>https://repo.opencollab.dev/main/</url>
+        </repository>
+        <repository>
             <id>gitea</id>
             <url>https://192.168.178.55:3000/api/packages/PaperMinecraft/maven</url>
         </repository>
@@ -56,6 +60,13 @@
             <groupId>io.papermc.paper</groupId>
             <artifactId>paper-api</artifactId>
             <version>26.2.build.87-stable</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.geysermc.floodgate</groupId>
+            <artifactId>api</artifactId>
+            <version>2.2.5-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>

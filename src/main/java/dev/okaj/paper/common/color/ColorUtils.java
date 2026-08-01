@@ -34,7 +34,6 @@ public class ColorUtils {
     @Deprecated
     private static final Base64.Decoder BASE64_DECODER = Base64.getDecoder();
 
-
     public static Component generateGradientText(@NotNull String txt, @NotNull Color c1, @NotNull Color c2) {
         // Convert the Color objects to TextColor
         TextColor startColor = TextColor.color(c1.getRed(), c1.getGreen(), c1.getBlue());
