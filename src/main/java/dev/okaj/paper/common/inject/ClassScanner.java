@@ -1,81 +1,69 @@
 package dev.okaj.paper.common.inject;
 
+import org.bukkit.plugin.java.JavaPlugin;
+
 import java.io.File;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.List;
+import java.util.jar.JarFile;
 
 public final class ClassScanner {
+
+    private final JavaPlugin plugin;
+
+    public ClassScanner(JavaPlugin plugin) {
+        this.plugin = plugin;
+    }
 
     public List<Class<?>> scan(String packageName) {
 
         List<Class<?>> classes = new ArrayList<>();
+
         String path = packageName.replace('.', '/');
 
         try {
-            ClassLoader classLoader =
-                    Thread.currentThread()
-                            .getContextClassLoader();
 
-            Enumeration<URL> resources =
-                    classLoader.getResources(path);
+            File jar = new File(
+                    plugin.getClass()
+                            .getProtectionDomain()
+                            .getCodeSource()
+                            .getLocation()
+                            .toURI()
+            );
 
-            while (resources.hasMoreElements()) {
-                URL resource =
-                        resources.nextElement();
+            try (JarFile jarFile = new JarFile(jar)) {
 
-                File directory =
-                        new File(resource.toURI());
+                jarFile.stream()
+                        .filter(entry -> entry.getName().startsWith(path))
+                        .filter(entry -> entry.getName().endsWith(".class"))
+                        .filter(entry -> !entry.getName().contains("$"))
+                        .forEach(entry -> {
 
-                scanDirectory(
-                        packageName,
-                        directory,
-                        classes
-                );
+                            String className =
+                                    entry.getName()
+                                            .replace("/", ".")
+                                            .replace(".class", "");
+
+                            try {
+                                classes.add(
+                                        Class.forName(
+                                                className,
+                                                false,
+                                                plugin.getClass().getClassLoader()
+                                        )
+                                );
+
+                            } catch (Throwable e) {
+                                plugin.getLogger()
+                                        .warning("Failed loading " + className);
+                            }
+                        });
             }
 
         } catch (Exception e) {
-            throw new RuntimeException(
-                    "Could not scan package " + packageName,
-                    e
-            );
+            throw new RuntimeException(e);
         }
 
         return classes;
-    }
-
-
-    private void scanDirectory(String packageName, File directory, List<Class<?>> classes) {
-
-        File[] files = directory.listFiles();
-
-        if (files == null) {
-            return;
-        }
-
-        for (File file : files) {
-            if (file.isDirectory()) {
-                scanDirectory(
-                        packageName + "." + file.getName(),
-                        file,
-                        classes
-                );
-            } else if (file.getName().endsWith(".class")) {
-
-                String className =
-                        packageName
-                                + "."
-                                + file.getName()
-                                .replace(".class", "");
-
-                try {
-                    classes.add(Class.forName(className));
-
-                } catch (ClassNotFoundException ignored) {
-
-                }
-            }
-        }
     }
 }

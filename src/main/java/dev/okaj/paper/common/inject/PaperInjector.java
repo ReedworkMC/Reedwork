@@ -3,6 +3,7 @@ package dev.okaj.paper.common.inject;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.List;
+import java.util.logging.Level;
 
 public final class PaperInjector {
 
@@ -13,7 +14,7 @@ public final class PaperInjector {
     public PaperInjector(JavaPlugin plugin) {
         this.plugin = plugin;
         this.registry = new InstanceRegistry();
-        this.scanner = new ClassScanner();
+        this.scanner = new ClassScanner(plugin);
 
 
         registry.register(
@@ -31,7 +32,7 @@ public final class PaperInjector {
         List<Class<?>> classes = scanner.scan(packageName);
 
         for (Class<?> clazz : classes) {
-            System.out.println("Found: " + clazz.getName());
+            plugin.getLogger().log(Level.INFO,"Found: " + clazz.getName());
         }
     }
 
