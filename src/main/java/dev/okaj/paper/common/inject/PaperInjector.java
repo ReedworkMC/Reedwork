@@ -3,6 +3,7 @@ package dev.okaj.paper.common.inject;
 import dev.okaj.paper.common.listener.ListenerProcessor;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 
@@ -11,10 +12,10 @@ public final class PaperInjector {
     private final JavaPlugin plugin;
     private final InstanceRegistry registry;
     private final ClassScanner scanner;
-    private final AnnotationProcessor processor;
     private final ConstructorResolver resolver;
     private final CreationContext creationContext;
-    private final ListenerProcessor listenerProcessor;
+
+    private final List<ClassProcessor> processors = new ArrayList<>();
 
     public PaperInjector(JavaPlugin plugin) {
         this.plugin = plugin;
@@ -22,21 +23,14 @@ public final class PaperInjector {
         this.scanner = new ClassScanner(plugin);
         this.resolver = new ConstructorResolver(this);
         this.creationContext = new CreationContext();
-        this.listenerProcessor = new ListenerProcessor(
-                this,
-                plugin.getServer().getPluginManager()
-        );
-        this.processor = new AnnotationProcessor(this, listenerProcessor);
 
-        registry.register(
-                JavaPlugin.class,
-                plugin
-        );
+        registry.register(JavaPlugin.class, plugin);
 
-        registry.register(
-                plugin.getClass(),
-                plugin
-        );
+        registry.register(plugin.getClass(), plugin);
+    }
+
+    public void addProcessor(ClassProcessor processor) {
+        processors.add(processor);
     }
 
     public void scan(String packageName) {
@@ -46,7 +40,10 @@ public final class PaperInjector {
             plugin.getLogger().log(Level.INFO, "Found: " + clazz.getName());
         }
 
-        processor.process(classes);
+        for (ClassProcessor processor : processors) {
+            processor.process(classes);
+        }
+//        processor.process(classes);
     }
 
     public Object initialize(Class<?> clazz) {
@@ -54,16 +51,23 @@ public final class PaperInjector {
     }
 
     public <T> T get(Class<T> type) {
-        Scope scope = ScopeResolver.resolve(type);
-
-        if (scope == Scope.SINGLETON) {
-            Object existing = registry.get(type);
-
-            if (existing != null) {
-                return type.cast(existing);
-            }
+        // 1. Existiert bereits?
+        T instance = registry.get(type);
+        if (instance != null) {
+            return instance;
         }
 
+        // 2. Kann der Container sie erzeugen?
+        if (!ClassFilter.isInjectable(type)) {
+            throw new DependencyException(
+                    "No registered instance for " + type.getName()
+            );
+        }
+
+        // 3. Scope bestimmen
+        Scope scope = ScopeResolver.resolve(type);
+
+        // 4. Erzeugen
         return create(type, scope);
     }
 

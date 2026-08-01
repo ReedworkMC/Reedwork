@@ -1,12 +1,13 @@
 package dev.okaj.paper.common.listener;
 
 import dev.okaj.paper.common.annotation.Listener;
+import dev.okaj.paper.common.inject.ClassProcessor;
 import dev.okaj.paper.common.inject.PaperInjector;
 import org.bukkit.plugin.PluginManager;
 
 import java.util.List;
 
-public final class ListenerProcessor {
+public final class ListenerProcessor implements ClassProcessor {
 
     private final PaperInjector injector;
     private final PluginManager pluginManager;
