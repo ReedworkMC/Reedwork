@@ -6,6 +6,7 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.Color;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -21,8 +22,18 @@ import java.util.Base64;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
+import java.util.logging.Level;
 
 public class ColorUtils {
+
+    @Deprecated
+    private static final HttpClient HTTP_CLIENT = HttpClient.newBuilder()
+            .followRedirects(HttpClient.Redirect.NORMAL)
+            .build();
+
+    @Deprecated
+    private static final Base64.Decoder BASE64_DECODER = Base64.getDecoder();
+
 
     public static Component generateGradientText(@NotNull String txt, @NotNull Color c1, @NotNull Color c2) {
         // Convert the Color objects to TextColor
@@ -52,31 +63,47 @@ public class ColorUtils {
         return gradientText;
     }
 
+    @Deprecated
     public static @NotNull URI getPlayerUrl(@NotNull Player player) {
         return URI.create("https://sessionserver.mojang.com/session/minecraft/profile/" + player.getUniqueId());
     }
 
-    public static @Nullable BufferedImage getPlayerTexture(@NotNull Player player) {
-        URI uri = getPlayerUrl(player);
-        HttpClient client = HttpClient.newHttpClient();
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(uri)
-                .GET()
-                .build();
+    @Deprecated
+    public static @Nullable BufferedImage getPlayerTexture(@NotNull Player player, JavaPlugin plugin) {
         try {
-            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            JsonObject json = JsonParser.parseString(response.body()).getAsJsonObject();
-            String img_str = json.getAsJsonArray("properties").get(0).getAsJsonObject().get("value").getAsString();
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(getPlayerUrl(player))
+                    .GET()
+                    .build();
 
-            byte[] textureJsonBytes = Base64.getDecoder().decode(img_str);
-            String textureJsonString = new String(textureJsonBytes, StandardCharsets.UTF_8);
-            JsonObject textureJson = JsonParser.parseString(textureJsonString).getAsJsonObject();
-            String skin_texture_url = textureJson.getAsJsonObject("textures").getAsJsonObject("SKIN").get("url").getAsString();
+            HttpResponse<String> response = HTTP_CLIENT.send(request, HttpResponse.BodyHandlers.ofString());
+
+            if (response.statusCode() == 200)
+                return null;
+
+            JsonObject json = JsonParser.parseString(response.body())
+                    .getAsJsonObject();
+
+            String img_str = json.getAsJsonArray("properties")
+                    .get(0)
+                    .getAsJsonObject()
+                    .get("value")
+                    .getAsString();
+
+            String textureJsonString = new String(BASE64_DECODER.decode(img_str), StandardCharsets.UTF_8);
+            String skin_texture_url = JsonParser.parseString(textureJsonString)
+                    .getAsJsonObject()
+                    .getAsJsonObject("textures")
+                    .getAsJsonObject("SKIN")
+                    .get("url")
+                    .getAsString();
 
             return ImageIO.read(URI.create(skin_texture_url).toURL());
+
         } catch (IOException | InterruptedException e) {
-            e.printStackTrace();
+            plugin.getLogger().log(Level.SEVERE, "Failed loading player texture", e);
         }
+
         return null;
     }
 
