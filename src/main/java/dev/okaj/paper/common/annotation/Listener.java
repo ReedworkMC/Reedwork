@@ -1,4 +1,4 @@
-package dev.okaj.paper.common.listener.annotation;
+package dev.okaj.paper.common.annotation;
 
 import java.lang.annotation.*;
 

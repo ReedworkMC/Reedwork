@@ -1,4 +1,4 @@
-package dev.okaj.paper.common.inject.annotation;
+package dev.okaj.paper.common.annotation;
 
 import java.lang.annotation.*;
 
