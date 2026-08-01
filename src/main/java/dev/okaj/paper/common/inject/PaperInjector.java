@@ -1,5 +1,6 @@
 package dev.okaj.paper.common.inject;
 
+import dev.okaj.paper.common.listener.ListenerProcessor;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.List;
@@ -13,14 +14,19 @@ public final class PaperInjector {
     private final AnnotationProcessor processor;
     private final ConstructorResolver resolver;
     private final CreationContext creationContext;
+    private final ListenerProcessor listenerProcessor;
 
     public PaperInjector(JavaPlugin plugin) {
         this.plugin = plugin;
         this.registry = new InstanceRegistry();
         this.scanner = new ClassScanner(plugin);
-        this.processor = new AnnotationProcessor(this);
         this.resolver = new ConstructorResolver(this);
         this.creationContext = new CreationContext();
+        this.listenerProcessor = new ListenerProcessor(
+                this,
+                plugin.getServer().getPluginManager()
+        );
+        this.processor = new AnnotationProcessor(this, listenerProcessor);
 
         registry.register(
                 JavaPlugin.class,
@@ -85,5 +91,9 @@ public final class PaperInjector {
 
     public InstanceRegistry getRegistry() {
         return registry;
+    }
+
+    public JavaPlugin getPlugin() {
+        return plugin;
     }
 }
