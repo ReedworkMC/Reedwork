@@ -1,6 +1,7 @@
 package dev.okaj.paper.common.inject;
 
 import dev.okaj.paper.common.annotation.Singleton;
+import dev.okaj.paper.common.annotation.Transient;
 
 import java.util.List;
 
@@ -19,9 +20,8 @@ public final class AnnotationProcessor {
                 continue;
             }
 
-            if (clazz.isAnnotationPresent(Singleton.class)) {
-                injector.createSingleton(clazz);
-
+            if (clazz.isAnnotationPresent(Singleton.class) || clazz.isAnnotationPresent(Transient.class)) {
+                injector.initialize(clazz);
             }
         }
     }

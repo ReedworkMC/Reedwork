@@ -43,21 +43,25 @@ public final class PaperInjector {
         processor.process(classes);
     }
 
-    public Object createSingleton(Class<?> clazz) {
+    public Object initialize(Class<?> clazz) {
         return get(clazz);
     }
 
     public <T> T get(Class<T> type) {
-        Object existing = registry.get(type);
+        Scope scope = ScopeResolver.resolve(type);
 
-        if (existing != null) {
-            return type.cast(existing);
+        if (scope == Scope.SINGLETON) {
+            Object existing = registry.get(type);
+
+            if (existing != null) {
+                return type.cast(existing);
+            }
         }
 
-        return create(type);
+        return create(type, scope);
     }
 
-    private <T> T create(Class<T> type) {
+    private <T> T create(Class<T> type, Scope scope) {
         if (creationContext.contains(type)) {
             throw new DependencyException("Circular dependency detected:\n"
                     + creationContext.describe(type));
@@ -67,7 +71,11 @@ public final class PaperInjector {
 
         try {
             Object instance = resolver.create(type);
-            registry.register(type, instance);
+
+            if (scope == Scope.SINGLETON) {
+                registry.register(type, instance);
+            }
+
             return type.cast(instance);
 
         } finally {
