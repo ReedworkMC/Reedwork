@@ -12,13 +12,17 @@ public final class PaperApplication {
     private final JavaPlugin plugin;
     private final PaperInjector injector;
     private final ModuleManager moduleManager;
+    private final PaperContext paperContext;
 
     public PaperApplication(JavaPlugin plugin) {
         this.plugin = plugin;
         this.injector = new PaperInjector(plugin);
         this.moduleManager = new ModuleManager();
+        this.paperContext = new PaperContext(plugin, injector, moduleManager);
 
         installDefaults();
+
+        moduleManager.initialize(paperContext);
     }
 
     private void installDefaults() {
@@ -27,8 +31,6 @@ public final class PaperApplication {
     }
 
     public PaperApplication scan(String packageName) {
-        PaperContext context = new PaperContext(plugin, injector, moduleManager);
-        moduleManager.initialize(context);
         injector.scan(packageName);
         return this;
     }

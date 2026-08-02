@@ -27,4 +27,8 @@ public final class PaperContext {
     public ModuleManager modules() {
         return moduleManager;
     }
+
+    public java.util.logging.Logger logger() {
+        return plugin.getLogger();
+    }
 }

@@ -1,7 +1,5 @@
 package dev.okaj.paper.common.command;
 
-import dev.okaj.paper.common.annotation.Command;
-
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
@@ -9,21 +7,41 @@ import java.util.Map;
 public final class CommandDefinition {
 
     private final Object instance;
-    private final Command annotation;
+
+    private final String name;
+    private final String description;
+    private final String permission;
+    private final String[] aliases;
+
     private final Map<String, Method> subCommands = new HashMap<>();
     private Method execute;
 
-    public CommandDefinition(Object instance, Command annotation) {
+    public CommandDefinition(Object instance, String name, String description, String permission, String[] aliases) {
         this.instance = instance;
-        this.annotation = annotation;
+        this.name = name;
+        this.description = description;
+        this.permission = permission;
+        this.aliases = aliases;
     }
 
     public Object instance() {
         return instance;
     }
 
-    public Command annotation() {
-        return annotation;
+    public String name() {
+        return name;
+    }
+
+    public String description() {
+        return description;
+    }
+
+    public String permission() {
+        return permission;
+    }
+
+    public String[] aliases() {
+        return aliases;
     }
 
     public Method execute() {

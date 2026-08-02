@@ -8,10 +8,11 @@ public final class CommandModule implements PaperModule {
 
     @Override
     public void initialize(PaperContext context) {
-        PaperCommandRegistry registry = new PaperCommandRegistry(context.plugin());
-
-        CommandProcessor processor = new CommandProcessor(context.injector(), registry);
-
-        context.injector().addProcessor(processor);
+        context.injector().addProcessor(
+                new CommandProcessor(
+                        context.injector(),
+                        new PaperCommandRegistry(context.plugin())
+                )
+        );
     }
 }

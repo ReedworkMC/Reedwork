@@ -18,7 +18,10 @@ public final class CommandScanner {
 
         CommandDefinition definition = new CommandDefinition(
                 instance,
-                annotation
+                annotation.value(),
+                annotation.description(),
+                annotation.permission(),
+                annotation.aliases()
         );
 
         for (Method method : clazz.getDeclaredMethods()) {

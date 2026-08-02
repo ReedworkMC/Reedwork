@@ -14,7 +14,7 @@ public final class PaperCommandRegistry implements CommandRegistry {
 
     @Override
     public void register(CommandDefinition definition) {
-        String name = definition.annotation().value();
+        String name = definition.name();
 
         plugin.getLogger().info("Registering command: " + name);
         //todo :=)
