@@ -2,8 +2,6 @@ package dev.okaj.paper.common.command;
 
 import dev.okaj.paper.common.annotation.Command;
 import dev.okaj.paper.common.command.parameter.ParameterResolverRegistry;
-import dev.okaj.paper.common.command.parameter.resolver.PlayerCommandParameterResolver;
-import dev.okaj.paper.common.command.parameter.resolver.StringCommandParameterResolver;
 import dev.okaj.paper.common.inject.ClassFilter;
 import dev.okaj.paper.common.inject.ClassProcessor;
 import dev.okaj.paper.common.inject.DependencyException;

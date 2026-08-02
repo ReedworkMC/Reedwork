@@ -6,7 +6,6 @@ public final class ParameterDefinition {
 
     private final Parameter parameter;
 
-
     public ParameterDefinition(Parameter parameter) {
         this.parameter = parameter;
     }
