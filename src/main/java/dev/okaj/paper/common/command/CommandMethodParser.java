@@ -64,7 +64,7 @@ public final class CommandMethodParser {
         }
 
         if (root == null) {
-            throw new CommandException("SubCommand path cannot be empty: " + method.getName() + " in " + method.getDeclaringClass());
+            throw new CommandException("SubCommand path cannot be empty: " + method);
         }
 
         current.handler(method);

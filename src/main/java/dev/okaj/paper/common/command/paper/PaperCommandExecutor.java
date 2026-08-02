@@ -1,8 +1,12 @@
 package dev.okaj.paper.common.command.paper;
 
-import dev.okaj.paper.common.command.*;
+import dev.okaj.paper.common.command.CommandArguments;
+import dev.okaj.paper.common.command.CommandContext;
+import dev.okaj.paper.common.command.CommandDefinition;
+import dev.okaj.paper.common.command.CommandInvoker;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 
 import java.lang.reflect.Method;
 
@@ -14,12 +18,12 @@ public final class PaperCommandExecutor {
         this.invoker = invoker;
     }
 
-    public void execute(CommandDefinition definition, Method method, com.mojang.brigadier.context.CommandContext<CommandSourceStack> context) {
+    public boolean execute(CommandDefinition definition, Method method, com.mojang.brigadier.context.CommandContext<CommandSourceStack> context) {
         CommandContext commandContext = new CommandContext(context.getSource(), new CommandArguments(context.getInput()));
-        try {
-            invoker.invoke(definition, method, commandContext, context);
-        } catch (CommandUsageException _) {
-            context.getSource().getSender().sendMessage(Component.text("Usage: " + definition.usage()));
+        boolean success = invoker.invoke(definition, method, commandContext, context);
+        if (!success) {
+            context.getSource().getSender().sendMessage(Component.text("Usage: " + definition.usage(), NamedTextColor.RED));
         }
+        return success;
     }
 }

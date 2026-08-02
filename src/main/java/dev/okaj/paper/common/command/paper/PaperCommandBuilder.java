@@ -1,5 +1,6 @@
 package dev.okaj.paper.common.command.paper;
 
+import com.mojang.brigadier.Command;
 import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.tree.LiteralCommandNode;
@@ -8,9 +9,6 @@ import dev.okaj.paper.common.command.node.ArgumentNodeDefinition;
 import dev.okaj.paper.common.command.node.CommandNodeDefinition;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
-import org.bukkit.Bukkit;
 
 public final class PaperCommandBuilder {
 
@@ -36,8 +34,8 @@ public final class PaperCommandBuilder {
 
         if (definition.hasExecute()) {
             root.executes(context -> {
-                executor.execute(definition, definition.execute(), context);
-                return 1;
+                boolean success = executor.execute(definition, definition.execute(), context);
+                return success ? Command.SINGLE_SUCCESS : 0;
             });
         }
 
@@ -55,8 +53,8 @@ public final class PaperCommandBuilder {
 
         if (node.hasHandler()) {
             builder.executes(context -> {
-                        executor.execute(definition, node.handler(), context);
-                        return 1;
+                        boolean success = executor.execute(definition, node.handler(), context);
+                        return success ? Command.SINGLE_SUCCESS : 0;
                     }
             );
         }

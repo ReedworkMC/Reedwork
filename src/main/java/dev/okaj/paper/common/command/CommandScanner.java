@@ -30,6 +30,8 @@ public final class CommandScanner {
 
         for (Method method : clazz.getDeclaredMethods()) {
 
+            validate(method);
+
             if (method.isAnnotationPresent(CommandHandler.class)) {
                 definition.execute(method);
             }
@@ -43,5 +45,11 @@ public final class CommandScanner {
         definition.generateUsage();
 
         return definition;
+    }
+
+    private void validate(Method method) {
+        if (!method.getReturnType().equals(Boolean.class)) {
+            throw new CommandException("Command methods must return boolean: " + method);
+        }
     }
 }

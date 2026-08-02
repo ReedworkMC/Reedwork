@@ -3,6 +3,8 @@ package dev.okaj.paper.common.command;
 import dev.okaj.paper.common.command.parameter.ParameterDefinition;
 import dev.okaj.paper.common.command.parameter.ParameterResolverRegistry;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
+import net.kyori.adventure.text.Component;
+import org.bukkit.Bukkit;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -17,14 +19,21 @@ public final class CommandInvoker {
         this.registry = registry;
     }
 
-    public void invoke(CommandDefinition definition, Method method, CommandContext context, com.mojang.brigadier.context.CommandContext<CommandSourceStack> brigadier) {
+    public boolean invoke(CommandDefinition definition, Method method, CommandContext context, com.mojang.brigadier.context.CommandContext<CommandSourceStack> brigadier) {
         try {
             Object[] parameters = Arrays.stream(method.getParameters())
                     .map(parameter -> resolve(parameter, context, brigadier))
                     .toArray();
 
             method.setAccessible(true);
-            method.invoke(definition.instance(), parameters);
+
+            Object result = method.invoke(definition.instance(), parameters);
+
+            if (!(result instanceof Boolean success)){
+                throw new CommandException("Command method must return boolean: " + method);
+            }
+
+            return success;
 
         } catch (InvocationTargetException | IllegalAccessException e) {
             throw new CommandException("Could not execute command", e);
