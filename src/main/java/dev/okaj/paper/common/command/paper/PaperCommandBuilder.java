@@ -33,7 +33,7 @@ public final class PaperCommandBuilder {
             });
         }
 
-        for (CommandNodeDefinition child : definition.nodes().values()) {
+        for (CommandNodeDefinition child : definition.nodes()) {
             builder.then(buildChild(child, definition));
         }
 

@@ -4,14 +4,14 @@ import com.mojang.brigadier.arguments.ArgumentType;
 
 public class ArgumentNodeDefinition extends CommandNodeDefinition{
 
-    private final ArgumentType<?> type;
+    private final ArgumentType<?> argumentType;
 
-    public ArgumentNodeDefinition(String name, ArgumentType<?> type) {
+    public ArgumentNodeDefinition(String name, ArgumentType<?> argumentType) {
         super(name);
-        this.type = type;
+        this.argumentType = argumentType;
     }
 
-    public ArgumentType<?> type() {
-        return type;
+    public ArgumentType<?> argumentType() {
+        return argumentType;
     }
 }

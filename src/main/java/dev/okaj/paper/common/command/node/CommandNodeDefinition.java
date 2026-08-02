@@ -42,7 +42,7 @@ public abstract class CommandNodeDefinition {
         return nodes.stream().filter(node -> node.name().equals(name)).findFirst().orElse(null);
     }
 
-    public CommandNodeDefinition getOrCreateChild(String name) {
+    public CommandNodeDefinition getOrCreateLiteral(String name) {
         CommandNodeDefinition existing = findChild(name);
         if (existing != null) {
             return existing;
