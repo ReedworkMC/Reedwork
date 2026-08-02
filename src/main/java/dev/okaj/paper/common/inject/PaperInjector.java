@@ -1,6 +1,5 @@
 package dev.okaj.paper.common.inject;
 
-import dev.okaj.paper.common.listener.ListenerProcessor;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;

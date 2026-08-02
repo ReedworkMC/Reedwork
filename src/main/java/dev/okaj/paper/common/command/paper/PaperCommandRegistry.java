@@ -17,5 +17,6 @@ public final class PaperCommandRegistry implements CommandRegistry {
         String name = definition.annotation().value();
 
         plugin.getLogger().info("Registering command: " + name);
+        //todo :=)
     }
 }
