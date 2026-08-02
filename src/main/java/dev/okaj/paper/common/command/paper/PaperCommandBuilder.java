@@ -33,7 +33,7 @@ public final class PaperCommandBuilder {
             });
         }
 
-        for (CommandNodeDefinition child : definition.children().values()) {
+        for (CommandNodeDefinition child : definition.nodes().values()) {
             builder.then(buildChild(child, definition));
         }
 
@@ -51,7 +51,7 @@ public final class PaperCommandBuilder {
             );
         }
 
-        for (CommandNodeDefinition child : node.children()) {
+        for (CommandNodeDefinition child : node.nodes()) {
             builder.then(buildChild(child, root));
         }
 

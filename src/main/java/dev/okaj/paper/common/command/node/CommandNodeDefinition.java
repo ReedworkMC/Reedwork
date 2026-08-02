@@ -4,10 +4,10 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CommandNodeDefinition {
+public abstract class CommandNodeDefinition {
 
     private final String name;
-    private final List<CommandNodeDefinition> children = new ArrayList<>();
+    private final List<CommandNodeDefinition> nodes = new ArrayList<>();
     private Method handler;
 
     public CommandNodeDefinition(String name) {
@@ -30,11 +30,33 @@ public class CommandNodeDefinition {
         return handler != null;
     }
 
-    public List<CommandNodeDefinition> children() {
-        return children;
+    public List<CommandNodeDefinition> nodes() {
+        return nodes;
     }
 
-    public void addChild(CommandNodeDefinition node) {
-        children.add(node);
+    public void addNode(CommandNodeDefinition node) {
+        nodes.add(node);
+    }
+
+    public CommandNodeDefinition findChild(String name) {
+        return nodes.stream().filter(node -> node.name().equals(name)).findFirst().orElse(null);
+    }
+
+    public CommandNodeDefinition getOrCreateChild(String name) {
+        CommandNodeDefinition existing = findChild(name);
+        if (existing != null) {
+            return existing;
+        }
+        CommandNodeDefinition node = new LiteralNodeDefinition(name);
+        nodes.add(node);
+        return node;
+    }
+
+    public boolean isArgument() {
+        return this instanceof ArgumentNodeDefinition;
+    }
+
+    public boolean isLiteral() {
+        return this instanceof LiteralNodeDefinition;
     }
 }

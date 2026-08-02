@@ -27,4 +27,7 @@ public final class ParameterResolverRegistry {
                         ));
     }
 
+    public List<CommandParameterResolver> resolvers() {
+        return resolvers;
+    }
 }

@@ -9,6 +9,12 @@ import java.lang.reflect.Method;
 
 public final class CommandScanner {
 
+    private final CommandMethodParser parser;
+
+    public CommandScanner(CommandMethodParser parser) {
+        this.parser = parser;
+    }
+
     public CommandDefinition scan(Object instance) {
         Class<?> clazz = instance.getClass();
         Command annotation = clazz.getAnnotation(Command.class);
@@ -26,37 +32,12 @@ public final class CommandScanner {
         );
 
         for (Method method : clazz.getDeclaredMethods()) {
-            if (method.isAnnotationPresent(SubCommand.class)) {
-                SubCommand sub = method.getAnnotation(SubCommand.class);
-                registerSubCommand(definition, sub.value(), method);
-            }
-
-            if (method.isAnnotationPresent(CommandHandler.class)) {
-                definition.execute(method);
+            if (method.isAnnotationPresent(CommandHandler.class) || method.isAnnotationPresent(SubCommand.class)) {
+                CommandNodeDefinition node = parser.parse(method);
+                definition.addNode(node);
             }
         }
 
         return definition;
-    }
-
-    private void registerSubCommand(CommandDefinition definition, String path, Method method) {
-        String[] parts = path.split(" ");
-
-        CommandNodeDefinition current = null;
-
-        for (String part : parts) {
-            CommandNodeDefinition next = new CommandNodeDefinition(part);
-
-            if (current == null) {
-                definition.addSubCommand(next);
-            }
-            else {
-                current.addChild(next);
-            }
-
-            current = next;
-        }
-
-        current.handler(method);
     }
 }

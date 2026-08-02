@@ -3,8 +3,8 @@ package dev.okaj.paper.common.command;
 import dev.okaj.paper.common.command.node.CommandNodeDefinition;
 
 import java.lang.reflect.Method;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 public final class CommandDefinition {
 
@@ -15,7 +15,7 @@ public final class CommandDefinition {
     private final String permission;
     private final String[] aliases;
 
-    private final Map<String, CommandNodeDefinition> children = new HashMap<>();
+    private final List<CommandNodeDefinition> nodes = new ArrayList<>();
     private Method execute;
 
     public CommandDefinition(Object instance, String name, String description, String permission, String[] aliases) {
@@ -54,19 +54,15 @@ public final class CommandDefinition {
         this.execute = method;
     }
 
-    public Map<String, CommandNodeDefinition> children() {
-        return children;
+    public List<CommandNodeDefinition> nodes() {
+        return nodes;
     }
 
-    public void addSubCommand(CommandNodeDefinition node) {
-        children.put(node.name(), node);
+    public void addNode(CommandNodeDefinition node) {
+        nodes.add(node);
     }
 
     public boolean hasExecute() {
         return execute != null;
-    }
-
-    public CommandNodeDefinition getSubCommand(String name) {
-        return children.get(name);
     }
 }
