@@ -43,7 +43,7 @@ public final class PaperCommandBuilder {
     private LiteralArgumentBuilder<CommandSourceStack> buildChild(CommandNodeDefinition node, CommandDefinition root) {
         var builder = Commands.literal(node.name());
 
-        if (node.handler() != null) {
+        if (node.hasHandler()) {
             builder.executes(ctx -> {
                         executor.execute(root, node.handler(), ctx.getSource());
                         return 1;

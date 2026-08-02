@@ -26,6 +26,10 @@ public final class CommandNodeDefinition {
         this.handler = method;
     }
 
+    public boolean hasHandler() {
+        return handler != null;
+    }
+
     public Map<String, CommandNodeDefinition> children() {
         return children;
     }

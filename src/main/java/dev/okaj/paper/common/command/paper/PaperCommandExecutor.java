@@ -16,7 +16,7 @@ public final class PaperCommandExecutor {
     }
 
     public void execute(CommandDefinition definition, Method method, CommandSourceStack source) {
-        CommandContext context = new CommandContext(source.getSender());
+        CommandContext context = new CommandContext(source);
         invoker.invoke(definition, method, context);
     }
 }
