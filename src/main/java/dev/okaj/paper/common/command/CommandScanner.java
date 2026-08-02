@@ -32,7 +32,12 @@ public final class CommandScanner {
         );
 
         for (Method method : clazz.getDeclaredMethods()) {
-            if (method.isAnnotationPresent(CommandHandler.class) || method.isAnnotationPresent(SubCommand.class)) {
+
+            if (method.isAnnotationPresent(CommandHandler.class)) {
+                definition.execute(method);
+            }
+
+            if (method.isAnnotationPresent(SubCommand.class)) {
                 CommandNodeDefinition node = parser.parse(method);
                 definition.addNode(node);
             }
