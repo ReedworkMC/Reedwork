@@ -1,5 +1,6 @@
 package dev.okaj.paper.common.command.paper;
 
+import dev.okaj.paper.common.command.CommandArguments;
 import dev.okaj.paper.common.command.CommandContext;
 import dev.okaj.paper.common.command.CommandDefinition;
 import dev.okaj.paper.common.command.CommandInvoker;
@@ -16,7 +17,8 @@ public final class PaperCommandExecutor {
     }
 
     public void execute(CommandDefinition definition, Method method, com.mojang.brigadier.context.CommandContext<CommandSourceStack> context) {
-        CommandContext commandContext = new CommandContext(context.getSource());
+        CommandArguments arguments = new CommandArguments(context.getInput());
+        CommandContext commandContext = new CommandContext(context.getSource(), arguments);
         invoker.invoke(definition, method, commandContext, context);
     }
 }

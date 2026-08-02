@@ -8,17 +8,23 @@ import org.bukkit.entity.Player;
 public final class CommandContext {
 
     private final CommandSourceStack source;
+    private final CommandArguments arguments;
 
-    public CommandContext(CommandSourceStack source) {
+    public CommandContext(CommandSourceStack source, CommandArguments arguments) {
         this.source = source;
-    }
-
-    public CommandSender sender() {
-        return source.getSender();
+        this.arguments = arguments;
     }
 
     public CommandSourceStack source() {
         return source;
+    }
+
+    public CommandArguments arguments() {
+        return arguments;
+    }
+
+    public CommandSender sender() {
+        return source.getSender();
     }
 
     public Player player() {
