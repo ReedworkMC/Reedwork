@@ -9,6 +9,10 @@ public final class ModuleManager {
 
     private final List<PaperModule> modules = new ArrayList<>();
 
+    public void install(PaperModule module) {
+        register(module);
+    }
+
     public void register(PaperModule module) {
         modules.add(module);
     }

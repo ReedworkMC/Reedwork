@@ -1,6 +1,7 @@
 package dev.okaj.paper.common.command;
 
 import dev.okaj.paper.common.annotation.Command;
+import dev.okaj.paper.common.annotation.CommandHandler;
 import dev.okaj.paper.common.annotation.SubCommand;
 
 import java.lang.reflect.Method;
@@ -26,7 +27,7 @@ public final class CommandScanner {
                 definition.addSubCommand(sub.value(), method);
             }
 
-            if (method.getName().equals("execute")) {
+            if (method.isAnnotationPresent(CommandHandler.class)) {
                 definition.execute(method);
             }
         }
