@@ -5,6 +5,8 @@ import dev.okaj.paper.common.command.CommandDefinition;
 import dev.okaj.paper.common.command.CommandInvoker;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 
+import java.lang.reflect.Method;
+
 public final class PaperCommandExecutor {
 
     private final CommandInvoker invoker;
@@ -13,8 +15,8 @@ public final class PaperCommandExecutor {
         this.invoker = new CommandInvoker();
     }
 
-    public void execute(CommandDefinition definition, CommandSourceStack source) {
+    public void execute(CommandDefinition definition, Method method, CommandSourceStack source) {
         CommandContext context = new CommandContext(source.getSender());
-        invoker.invoke(definition, definition.execute(), context);
+        invoker.invoke(definition, method, context);
     }
 }

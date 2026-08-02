@@ -27,7 +27,7 @@ public final class CommandScanner {
         for (Method method : clazz.getDeclaredMethods()) {
             if (method.isAnnotationPresent(SubCommand.class)) {
                 SubCommand sub = method.getAnnotation(SubCommand.class);
-                definition.addSubCommand(sub.value(), method);
+                registerSubCommand(definition, sub.value(), method);
             }
 
             if (method.isAnnotationPresent(CommandHandler.class)) {
@@ -36,5 +36,26 @@ public final class CommandScanner {
         }
 
         return definition;
+    }
+
+    private void registerSubCommand(CommandDefinition definition, String path, Method method) {
+        String[] parts = path.split(" ");
+
+        CommandNodeDefinition current = null;
+
+        for (String part : parts) {
+            CommandNodeDefinition next = new CommandNodeDefinition(part);
+
+            if (current == null) {
+                definition.addSubCommand(next);
+            }
+            else {
+                current.addChild(next);
+            }
+
+            current = next;
+        }
+
+        current.handler(method);
     }
 }

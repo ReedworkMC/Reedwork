@@ -13,7 +13,7 @@ public final class CommandDefinition {
     private final String permission;
     private final String[] aliases;
 
-    private final Map<String, Method> subCommands = new HashMap<>();
+    private final Map<String, CommandNodeDefinition> children = new HashMap<>();
     private Method execute;
 
     public CommandDefinition(Object instance, String name, String description, String permission, String[] aliases) {
@@ -52,19 +52,19 @@ public final class CommandDefinition {
         this.execute = method;
     }
 
-    public Map<String, Method> subCommands() {
-        return subCommands;
+    public Map<String, CommandNodeDefinition> children() {
+        return children;
     }
 
-    public void addSubCommand(String name, Method method) {
-        subCommands.put(name, method);
+    public void addSubCommand(CommandNodeDefinition node) {
+        children.put(node.name(), node);
     }
 
     public boolean hasExecute() {
         return execute != null;
     }
 
-    public Method getSubCommand(String name) {
-        return subCommands.get(name);
+    public CommandNodeDefinition getSubCommand(String name) {
+        return children.get(name);
     }
 }
