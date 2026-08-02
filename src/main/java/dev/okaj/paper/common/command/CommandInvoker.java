@@ -31,6 +31,11 @@ public final class CommandInvoker {
         }
     }
 
+    private Object[] resolveParameters(Method method, CommandContext context, com.mojang.brigadier.context.CommandContext<CommandSourceStack> brigadier) {
+        return Arrays.stream(method.getParameters())
+                .map(parameter -> resolve(parameter, context, brigadier))
+                .toArray();
+    }
 
     private Object resolve(Parameter parameter, CommandContext context, com.mojang.brigadier.context.CommandContext<CommandSourceStack> brigadier) {
         if (parameter.getType().equals(CommandContext.class)) {

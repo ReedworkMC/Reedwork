@@ -1,8 +1,10 @@
 package dev.okaj.paper.common.command.paper;
 
+import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import dev.okaj.paper.common.command.CommandDefinition;
+import dev.okaj.paper.common.command.node.ArgumentNodeDefinition;
 import dev.okaj.paper.common.command.node.CommandNodeDefinition;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
@@ -11,48 +13,54 @@ public final class PaperCommandBuilder {
 
     private final PaperCommandExecutor executor;
 
-    public PaperCommandBuilder() {
-        this.executor = new PaperCommandExecutor();
+    public PaperCommandBuilder(PaperCommandExecutor executor) {
+        this.executor = executor;
     }
 
     public LiteralCommandNode<CommandSourceStack> build(CommandDefinition definition) {
 
-        var builder = Commands.literal(definition.name());
+        LiteralArgumentBuilder<CommandSourceStack> root = Commands.literal(definition.name());
 
         if (!definition.permission().isBlank()) {
-            builder.requires(source ->
+            root.requires(source ->
                     source.getSender().hasPermission(definition.permission())
             );
         }
 
-        if (definition.hasExecute()) {
-            builder.executes(context -> {
-                executor.execute(definition, definition.execute(), context.getSource());
+        for (CommandNodeDefinition node : definition.nodes()) {
+            root.then(buildNode(node, definition));
+        }
 
+        if (definition.hasExecute()) {
+            root.executes(context -> {
+                executor.execute(definition, definition.execute(), context);
                 return 1;
             });
         }
 
-        for (CommandNodeDefinition child : definition.nodes()) {
-            builder.then(buildChild(child, definition));
-        }
-
-        return builder.build();
+        return root.build();
     }
 
-    private LiteralArgumentBuilder<CommandSourceStack> buildChild(CommandNodeDefinition node, CommandDefinition root) {
-        var builder = Commands.literal(node.name());
+    private ArgumentBuilder<CommandSourceStack, ?> buildNode(CommandNodeDefinition node, CommandDefinition definition) {
+        ArgumentBuilder<CommandSourceStack, ?> builder;
+
+        if (node instanceof ArgumentNodeDefinition argument){
+            builder = Commands.argument(argument.name(), argument.argumentType());
+        }
+        else {
+            builder = Commands.literal(node.name());
+        }
 
         if (node.hasHandler()) {
-            builder.executes(ctx -> {
-                        executor.execute(root, node.handler(), ctx.getSource());
+            builder.executes(context -> {
+                        executor.execute(definition, node.handler(), context);
                         return 1;
                     }
             );
         }
 
         for (CommandNodeDefinition child : node.nodes()) {
-            builder.then(buildChild(child, root));
+            builder.then(buildNode(child, definition));
         }
 
         return builder;

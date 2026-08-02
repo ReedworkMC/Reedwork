@@ -1,6 +1,9 @@
 package dev.okaj.paper.common.command;
 
 import dev.okaj.paper.common.annotation.Command;
+import dev.okaj.paper.common.command.parameter.ParameterResolverRegistry;
+import dev.okaj.paper.common.command.parameter.resolver.PlayerCommandParameterResolver;
+import dev.okaj.paper.common.command.parameter.resolver.StringCommandParameterResolver;
 import dev.okaj.paper.common.inject.ClassFilter;
 import dev.okaj.paper.common.inject.ClassProcessor;
 import dev.okaj.paper.common.inject.DependencyException;
@@ -15,10 +18,11 @@ public final class CommandProcessor implements ClassProcessor {
     private final CommandRegistry registry;
 
 
-    public CommandProcessor(PaperInjector injector, CommandRegistry registry) {
+    public CommandProcessor(PaperInjector injector, CommandRegistry registry, ParameterResolverRegistry parameters) {
         this.injector = injector;
         this.registry = registry;
-        this.scanner = new CommandScanner();
+
+        this.scanner = new CommandScanner(new CommandMethodParser(parameters));
     }
 
     public void process(List<Class<?>> classes) {

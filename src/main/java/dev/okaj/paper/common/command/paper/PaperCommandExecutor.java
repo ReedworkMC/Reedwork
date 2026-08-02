@@ -11,12 +11,12 @@ public final class PaperCommandExecutor {
 
     private final CommandInvoker invoker;
 
-    public PaperCommandExecutor() {
-        this.invoker = new CommandInvoker();
+    public PaperCommandExecutor(CommandInvoker invoker) {
+        this.invoker = invoker;
     }
 
-    public void execute(CommandDefinition definition, Method method, CommandSourceStack source) {
-        CommandContext context = new CommandContext(source);
-        invoker.invoke(definition, method, context);
+    public void execute(CommandDefinition definition, Method method, com.mojang.brigadier.context.CommandContext<CommandSourceStack> context) {
+        CommandContext commandContext = new CommandContext(context.getSource());
+        invoker.invoke(definition, method, commandContext, context);
     }
 }
