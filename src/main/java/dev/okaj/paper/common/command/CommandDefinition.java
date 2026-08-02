@@ -10,20 +10,14 @@ public final class CommandDefinition {
 
     private final Object instance;
 
-    private final String name;
-    private final String description;
-    private final String permission;
-    private final String[] aliases;
-
+    private final CommandMetadata metadata;
     private final List<CommandNodeDefinition> nodes = new ArrayList<>();
+    private String usage;
     private Method execute;
 
-    public CommandDefinition(Object instance, String name, String description, String permission, String[] aliases) {
+    public CommandDefinition(Object instance, CommandMetadata metadata) {
         this.instance = instance;
-        this.name = name;
-        this.description = description;
-        this.permission = permission;
-        this.aliases = aliases;
+        this.metadata = metadata;
     }
 
     public Object instance() {
@@ -31,19 +25,23 @@ public final class CommandDefinition {
     }
 
     public String name() {
-        return name;
+        return metadata.name();
     }
 
     public String description() {
-        return description;
+        return metadata.description();
     }
 
     public String permission() {
-        return permission;
+        return metadata.permission();
+    }
+
+    public String usage() {
+        return usage;
     }
 
     public String[] aliases() {
-        return aliases;
+        return metadata.aliases();
     }
 
     public Method execute() {
@@ -64,5 +62,13 @@ public final class CommandDefinition {
 
     public boolean hasExecute() {
         return execute != null;
+    }
+
+    public void generateUsage() {
+        if (metadata.usage() != null && !metadata.usage().isBlank()) {
+            usage = metadata.usage();
+            return;
+        }
+        usage = new CommandUsageGenerator().generate(this);
     }
 }

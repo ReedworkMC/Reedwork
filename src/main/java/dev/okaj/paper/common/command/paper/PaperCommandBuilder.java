@@ -8,6 +8,9 @@ import dev.okaj.paper.common.command.node.ArgumentNodeDefinition;
 import dev.okaj.paper.common.command.node.CommandNodeDefinition;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
+import org.bukkit.Bukkit;
 
 public final class PaperCommandBuilder {
 
@@ -44,10 +47,9 @@ public final class PaperCommandBuilder {
     private ArgumentBuilder<CommandSourceStack, ?> buildNode(CommandNodeDefinition node, CommandDefinition definition) {
         ArgumentBuilder<CommandSourceStack, ?> builder;
 
-        if (node instanceof ArgumentNodeDefinition argument){
+        if (node instanceof ArgumentNodeDefinition argument) {
             builder = Commands.argument(argument.name(), argument.argumentType());
-        }
-        else {
+        } else {
             builder = Commands.literal(node.name());
         }
 

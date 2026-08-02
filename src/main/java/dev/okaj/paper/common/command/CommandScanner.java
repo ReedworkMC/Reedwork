@@ -25,10 +25,7 @@ public final class CommandScanner {
 
         CommandDefinition definition = new CommandDefinition(
                 instance,
-                annotation.value(),
-                annotation.description(),
-                annotation.permission(),
-                annotation.aliases()
+                CommandMetadata.of(annotation)
         );
 
         for (Method method : clazz.getDeclaredMethods()) {
@@ -42,6 +39,8 @@ public final class CommandScanner {
                 definition.addNode(node);
             }
         }
+
+        definition.generateUsage();
 
         return definition;
     }
