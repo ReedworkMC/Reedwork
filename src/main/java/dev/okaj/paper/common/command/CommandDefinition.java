@@ -1,5 +1,7 @@
 package dev.okaj.paper.common.command;
 
+import dev.okaj.paper.common.command.node.CommandNodeDefinition;
+
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;

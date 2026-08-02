@@ -3,6 +3,7 @@ package dev.okaj.paper.common.command;
 import dev.okaj.paper.common.annotation.Command;
 import dev.okaj.paper.common.annotation.CommandHandler;
 import dev.okaj.paper.common.annotation.SubCommand;
+import dev.okaj.paper.common.command.node.CommandNodeDefinition;
 
 import java.lang.reflect.Method;
 

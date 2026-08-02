@@ -26,7 +26,7 @@ public final class ConstructorResolver {
             return constructor.newInstance(parameters);
 
         } catch (InvocationTargetException | InstantiationException | IllegalAccessException e) {
-            throw new DependencyException("Could not create " + clazz.getName(), e);
+            throw new DependencyException("Could not resolve " + clazz.getName(), e);
         }
     }
 

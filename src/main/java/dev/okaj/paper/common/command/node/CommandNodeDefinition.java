@@ -1,13 +1,13 @@
-package dev.okaj.paper.common.command;
+package dev.okaj.paper.common.command.node;
 
 import java.lang.reflect.Method;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
-public final class CommandNodeDefinition {
+public class CommandNodeDefinition {
 
     private final String name;
-    private final Map<String, CommandNodeDefinition> children = new HashMap<>();
+    private final List<CommandNodeDefinition> children = new ArrayList<>();
     private Method handler;
 
     public CommandNodeDefinition(String name) {
@@ -30,11 +30,11 @@ public final class CommandNodeDefinition {
         return handler != null;
     }
 
-    public Map<String, CommandNodeDefinition> children() {
+    public List<CommandNodeDefinition> children() {
         return children;
     }
 
     public void addChild(CommandNodeDefinition node) {
-        children.put(node.name(), node);
+        children.add(node);
     }
 }

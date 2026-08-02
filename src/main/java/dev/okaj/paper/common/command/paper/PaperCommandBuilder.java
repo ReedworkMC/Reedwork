@@ -3,7 +3,7 @@ package dev.okaj.paper.common.command.paper;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import dev.okaj.paper.common.command.CommandDefinition;
-import dev.okaj.paper.common.command.CommandNodeDefinition;
+import dev.okaj.paper.common.command.node.CommandNodeDefinition;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 
@@ -51,7 +51,7 @@ public final class PaperCommandBuilder {
             );
         }
 
-        for (CommandNodeDefinition child : node.children().values()) {
+        for (CommandNodeDefinition child : node.children()) {
             builder.then(buildChild(child, root));
         }
 
