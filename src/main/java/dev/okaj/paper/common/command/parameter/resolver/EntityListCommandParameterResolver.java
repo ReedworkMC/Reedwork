@@ -9,21 +9,33 @@ import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.argument.ArgumentTypes;
 import io.papermc.paper.command.brigadier.argument.resolvers.selector.EntitySelectorArgumentResolver;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
 
 import java.lang.reflect.Parameter;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.List;
 
-public class EntityCommandParameterResolver implements CommandParameterResolver {
+public class EntityListCommandParameterResolver implements CommandParameterResolver {
 
     @Override
     public boolean supports(Parameter parameter) {
-        return parameter.getType().equals(Entity.class);
+        // List<Entity>
+        if (!parameter.getType().equals(List.class)) {
+            return false;
+        }
+
+        Type genericType = parameter.getParameterizedType();
+        if (!(genericType instanceof ParameterizedType parameterizedType)){
+            return false;
+        }
+
+        Type[] arguments = parameterizedType.getActualTypeArguments();
+        return arguments.length == 1 && arguments[0].equals(Entity.class);
     }
 
     @Override
     public ArgumentType<?> argumentType(ParameterDefinition parameter) {
-        return ArgumentTypes.entity();
+        return ArgumentTypes.entities();
     }
 
     @Override
@@ -31,9 +43,9 @@ public class EntityCommandParameterResolver implements CommandParameterResolver 
         try {
             EntitySelectorArgumentResolver resolver = brigadier.getArgument(parameter.name(), EntitySelectorArgumentResolver.class);
 
-            return resolver.resolve(context.source()).getFirst();
+            return resolver.resolve(context.source());
         } catch (CommandSyntaxException e) {
-            throw new CommandException("Could not resolve Entity argument: " + parameter.name(), e);
+            throw new CommandException("Could not resolve List<Entity> argument: " + parameter.name(), e);
         }
     }
 }

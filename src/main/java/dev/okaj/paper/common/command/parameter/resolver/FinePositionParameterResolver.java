@@ -32,7 +32,7 @@ public class FinePositionParameterResolver implements CommandParameterResolver {
 
             return resolver.resolve(context.source());
         } catch (CommandSyntaxException e) {
-            throw new CommandException("Could not resolve Fine Position argument: " + parameter.name(), e);
+            throw new CommandException("Could not resolve FinePosition argument: " + parameter.name(), e);
         }
     }
 }

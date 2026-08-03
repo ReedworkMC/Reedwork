@@ -30,7 +30,7 @@ public class BlockPositionParameterResolver implements CommandParameterResolver 
 
             return resolver.resolve(context.source());
         } catch (CommandSyntaxException e) {
-            throw new CommandException("Could not resolve Block Position argument: " + parameter.name(), e);
+            throw new CommandException("Could not resolve BlockPosition argument: " + parameter.name(), e);
         }
     }
 }
