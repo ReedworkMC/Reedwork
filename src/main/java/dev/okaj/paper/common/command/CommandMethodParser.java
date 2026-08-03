@@ -35,6 +35,14 @@ public final class CommandMethodParser {
 
         Parameter[] parameters = method.getParameters();
 
+        int argumentCount = 0;
+
+        for (String part : parts) {
+            if (isArgument(part)) {
+                argumentCount++;
+            }
+        }
+
         int argumentIndex = 0;
 
         for (String part : parts) {
@@ -43,9 +51,7 @@ public final class CommandMethodParser {
             if (isArgument(part)) {
                 Parameter parameter = findNextArgumentParameter(parameters, argumentIndex);
 
-                argumentIndex++;
-
-                ParameterDefinition definition = new ParameterDefinition(parameter);
+                ParameterDefinition definition = new ParameterDefinition(parameter, argumentIndex++, argumentCount);
 
                 node = new ArgumentNodeDefinition(
                         parameter.getName(),

@@ -3,13 +3,12 @@ package dev.okaj.paper.common.command;
 import dev.okaj.paper.common.command.parameter.ParameterDefinition;
 import dev.okaj.paper.common.command.parameter.ParameterResolverRegistry;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
-import net.kyori.adventure.text.Component;
-import org.bukkit.Bukkit;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.Arrays;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public final class CommandInvoker {
 
@@ -21,9 +20,7 @@ public final class CommandInvoker {
 
     public boolean invoke(CommandDefinition definition, Method method, CommandContext context, com.mojang.brigadier.context.CommandContext<CommandSourceStack> brigadier) {
         try {
-            Object[] parameters = Arrays.stream(method.getParameters())
-                    .map(parameter -> resolve(parameter, context, brigadier))
-                    .toArray();
+            Object[] parameters = resolveParameters(method, context, brigadier);
 
             method.setAccessible(true);
 
@@ -35,23 +32,33 @@ public final class CommandInvoker {
 
             return success;
 
-        } catch (InvocationTargetException | IllegalAccessException e) {
-            throw new CommandException("Could not execute command", e);
+        } catch (InvocationTargetException e) {
+            throw new CommandException("Command execution failed", e.getCause());
+        } catch (IllegalAccessException e) {
+            throw new CommandException("Could not access command method", e);
         }
     }
 
     private Object[] resolveParameters(Method method, CommandContext context, com.mojang.brigadier.context.CommandContext<CommandSourceStack> brigadier) {
-        return Arrays.stream(method.getParameters())
-                .map(parameter -> resolve(parameter, context, brigadier))
+        Parameter[] parameters = method.getParameters();
+
+        int argumentCount = Math.toIntExact(Arrays.stream(parameters)
+                .filter(parameter -> !parameter.getType().equals(CommandContext.class))
+                .count());
+
+        AtomicInteger argumentIndexes = new AtomicInteger();
+
+        return Arrays.stream(parameters)
+                .map(parameter -> {
+                    if (parameter.getType().equals(CommandContext.class)) {
+                        return context;
+                    }
+
+                    ParameterDefinition definition = new ParameterDefinition(parameter, argumentIndexes.getAndIncrement(), argumentCount);
+
+                   return registry.resolve(parameter).resolve(context, brigadier, definition);
+
+                })
                 .toArray();
-    }
-
-    private Object resolve(Parameter parameter, CommandContext context, com.mojang.brigadier.context.CommandContext<CommandSourceStack> brigadier) {
-        if (parameter.getType().equals(CommandContext.class)) {
-            return context;
-        }
-
-        ParameterDefinition definition = new ParameterDefinition(parameter);
-        return registry.resolve(parameter).resolve(context, brigadier, definition);
     }
 }

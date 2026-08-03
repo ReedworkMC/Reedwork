@@ -17,7 +17,10 @@ public class StringCommandParameterResolver implements CommandParameterResolver 
 
     @Override
     public ArgumentType<?> argumentType(ParameterDefinition parameter) {
-        return StringArgumentType.greedyString();
+        if (parameter.isLastArgument()) {
+            return StringArgumentType.greedyString();
+        }
+        return StringArgumentType.string();
     }
 
     @Override
