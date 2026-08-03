@@ -2,9 +2,9 @@ package dev.okaj.paper.common;
 
 import dev.okaj.paper.common.command.CommandModule;
 import dev.okaj.paper.common.inject.PaperInjector;
+import dev.okaj.paper.common.inject.ServiceRegistry;
 import dev.okaj.paper.common.listener.ListenerModule;
 import dev.okaj.paper.common.module.ModuleManager;
-import dev.okaj.paper.common.module.PaperModule;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class PaperApplication {
@@ -32,8 +32,15 @@ public final class PaperApplication {
         return this;
     }
 
-    public PaperApplication register(PaperModule module) {
-        moduleManager.register(module);
-        return this;
+    public <T> Binder<T> bind(Class<T> type) {
+        return new Binder<>(this, type);
+    }
+
+    ServiceRegistry registry() {
+        return injector.getRegistry();
+    }
+
+    PaperInjector injector() {
+        return injector;
     }
 }
