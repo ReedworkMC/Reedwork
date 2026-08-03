@@ -6,7 +6,7 @@
 
     <groupId>dev.okaj.paper</groupId>
     <artifactId>common</artifactId>
-    <version>2.3.0-dev</version>
+    <version>2.3.0</version>
 
     <name>PaperCommon</name>
 

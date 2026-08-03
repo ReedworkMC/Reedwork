@@ -1,7 +1,10 @@
 package dev.okaj.paper.common.inject;
 
+import dev.okaj.paper.common.annotation.Named;
+
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Parameter;
 import java.util.Arrays;
 
 public final class ConstructorResolver {
@@ -17,7 +20,7 @@ public final class ConstructorResolver {
             Constructor<?> constructor = findConstructor(clazz);
 
             Object[] parameters =
-                    Arrays.stream(constructor.getParameterTypes())
+                    Arrays.stream(constructor.getParameters())
                             .map(this::resolveDependency)
                             .toArray();
 
@@ -49,7 +52,12 @@ public final class ConstructorResolver {
     }
 
 
-    private Object resolveDependency(Class<?> type) {
-        return injector.get(type);
+    private Object resolveDependency(Parameter parameter) {
+        Named named = parameter.getAnnotation(Named.class);
+
+        if (named != null) {
+            return injector.get(parameter.getType(), named.value());
+        }
+        return injector.get(parameter.getType());
     }
 }

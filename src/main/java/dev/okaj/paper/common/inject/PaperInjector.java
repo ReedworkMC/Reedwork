@@ -23,9 +23,8 @@ public final class PaperInjector {
         this.resolver = new ConstructorResolver(this);
         this.creationContext = new CreationContext();
 
-        registry.registerSingleton(JavaPlugin.class, plugin);
-
-        registry.registerSingleton(plugin.getClass(), plugin);
+        registry.registerSingleton(JavaPlugin.class, "", plugin);
+        registry.registerSingleton(plugin.getClass(), "", plugin);
     }
 
     public void addProcessor(ClassProcessor processor) {
@@ -44,13 +43,21 @@ public final class PaperInjector {
         }
     }
 
-    public <T> T get(Class<T> type) {
-        T instance = registry.get(type);
+    public <T> T get(Class<T> type, String name) {
+        T instance = registry.get(type, name);
         if (instance != null) {
             return instance;
         }
 
+        if (type.isInterface()) {
+            throw new DependencyException("No binding found for interface: " + type.getName());
+        }
+
         return create(type);
+    }
+
+    public <T> T get(Class<T> type) {
+        return get(type, "");
     }
 
     public <T> T create(Class<T> type) {
@@ -66,7 +73,7 @@ public final class PaperInjector {
             Scope scope = ScopeResolver.resolve(type);
 
             if (scope == Scope.SINGLETON) {
-                registry.registerSingleton(type, instance);
+                registry.registerSingleton(type, "", instance);
                 return type.cast(instance);
             }
 
