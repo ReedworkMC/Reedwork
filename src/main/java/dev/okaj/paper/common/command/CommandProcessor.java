@@ -2,10 +2,7 @@ package dev.okaj.paper.common.command;
 
 import dev.okaj.paper.common.annotation.Command;
 import dev.okaj.paper.common.command.parameter.ParameterResolverRegistry;
-import dev.okaj.paper.common.inject.ClassFilter;
-import dev.okaj.paper.common.inject.ClassProcessor;
-import dev.okaj.paper.common.inject.DependencyException;
-import dev.okaj.paper.common.inject.PaperInjector;
+import dev.okaj.paper.common.inject.*;
 
 import java.util.List;
 
@@ -29,10 +26,6 @@ public final class CommandProcessor implements ClassProcessor {
 
             if (annotation == null) {
                 continue;
-            }
-
-            if (!ClassFilter.isInjectable(clazz)) {
-                throw new DependencyException("Command is not injectable: " + clazz.getName());
             }
 
             Object instance = injector.get(clazz);

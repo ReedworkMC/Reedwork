@@ -42,31 +42,16 @@ public final class PaperInjector {
         for (ClassProcessor processor : processors) {
             processor.process(classes);
         }
-//        processor.process(classes);
-    }
-
-    public Object initialize(Class<?> clazz) {
-        return get(clazz);
     }
 
     public <T> T get(Class<T> type) {
-        // 1. Existiert bereits?
         T instance = registry.get(type);
         if (instance != null) {
             return instance;
         }
 
-        // 2. Kann der Container sie erzeugen?
-        if (!ClassFilter.isInjectable(type)) {
-            throw new DependencyException(
-                    "No registered instance for " + type.getName()
-            );
-        }
-
-        // 3. Scope bestimmen
         Scope scope = ScopeResolver.resolve(type);
 
-        // 4. Erzeugen
         return create(type, scope);
     }
 

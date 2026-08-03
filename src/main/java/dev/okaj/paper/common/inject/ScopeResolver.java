@@ -7,9 +7,6 @@ import java.lang.annotation.Annotation;
 
 public final class ScopeResolver {
 
-    private ScopeResolver() {
-    }
-
     public static Scope resolve(Class<?> clazz) {
         if (hasAnnotation(clazz, Singleton.class)) {
             return Scope.SINGLETON;
@@ -19,11 +16,10 @@ public final class ScopeResolver {
             return Scope.TRANSIENT;
         }
 
-        throw new DependencyException("Class " + clazz.getName() + " has no scope annotation");
+        throw new DependencyException("No DI registration for " + clazz.getName());
     }
 
     public static boolean hasAnnotation(Class<?> clazz, Class<? extends Annotation> target) {
-
         if (clazz.isAnnotationPresent(target)) {
             return true;
         }

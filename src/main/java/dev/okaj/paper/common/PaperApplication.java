@@ -9,16 +9,13 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public final class PaperApplication {
 
-    private final JavaPlugin plugin;
     private final PaperInjector injector;
     private final ModuleManager moduleManager;
-    private final PaperContext paperContext;
 
     public PaperApplication(JavaPlugin plugin) {
-        this.plugin = plugin;
         this.injector = new PaperInjector(plugin);
         this.moduleManager = new ModuleManager();
-        this.paperContext = new PaperContext(plugin, injector, moduleManager);
+        PaperContext paperContext = new PaperContext(plugin, injector, moduleManager);
 
         installDefaults();
 
