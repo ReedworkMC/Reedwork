@@ -6,10 +6,6 @@ import dev.okaj.paper.common.command.paper.PaperCommandExecutor;
 import dev.okaj.paper.common.command.paper.PaperCommandRegistry;
 import dev.okaj.paper.common.command.parameter.DefaultParameterResolvers;
 import dev.okaj.paper.common.command.parameter.ParameterResolverRegistry;
-import dev.okaj.paper.common.command.parameter.resolver.BlockPositionParameterResolver;
-import dev.okaj.paper.common.command.parameter.resolver.EntityCommandParameterResolver;
-import dev.okaj.paper.common.command.parameter.resolver.PlayerCommandParameterResolver;
-import dev.okaj.paper.common.command.parameter.resolver.primitiv.StringCommandParameterResolver;
 import dev.okaj.paper.common.module.PaperModule;
 
 public final class CommandModule implements PaperModule {

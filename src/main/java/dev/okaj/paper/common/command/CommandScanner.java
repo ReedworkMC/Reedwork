@@ -48,7 +48,9 @@ public final class CommandScanner {
     }
 
     private void validate(Method method) {
-        if (!method.getReturnType().equals(Boolean.class)) {
+        Class<?> returnType = method.getReturnType();
+
+        if (returnType != boolean.class && returnType != Boolean.class) {
             throw new CommandException("Command methods must return boolean: " + method);
         }
     }
