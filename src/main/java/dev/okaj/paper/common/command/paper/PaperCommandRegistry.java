@@ -1,8 +1,11 @@
 package dev.okaj.paper.common.command.paper;
 
+import dev.okaj.paper.common.PaperLogger;
 import dev.okaj.paper.common.command.CommandDefinition;
 import dev.okaj.paper.common.command.CommandRegistry;
+import io.papermc.paper.plugin.lifecycle.event.LifecycleEventManager;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Arrays;
@@ -10,19 +13,21 @@ import java.util.List;
 
 public final class PaperCommandRegistry implements CommandRegistry {
 
-    private final JavaPlugin plugin;
+    private final PaperLogger logger;
+    private final LifecycleEventManager<?>  lifecycleManager;
     private final PaperCommandBuilder builder;
 
-    public PaperCommandRegistry(JavaPlugin plugin, PaperCommandBuilder builder) {
-        this.plugin = plugin;
+    public PaperCommandRegistry(PaperLogger logger, LifecycleEventManager<?> lifecycleManager, PaperCommandBuilder builder) {
+        this.logger = logger;
+        this.lifecycleManager = lifecycleManager;
         this.builder = builder;
     }
 
     @Override
     public void register(CommandDefinition definition) {
-        plugin.getLogger().info("Registering command: " + definition.name());
+        logger.info("Registering command: " + definition.name());
 
-        plugin.getLifecycleManager()
+        lifecycleManager
                 .registerEventHandler(
                         LifecycleEvents.COMMANDS,
                         event -> {

@@ -1,13 +1,13 @@
 package dev.okaj.paper.common.inject.provider;
 
-import dev.okaj.paper.common.inject.PaperInjector;
+import dev.okaj.paper.common.inject.AbstractInjector;
 
 public class TransientProvider<T> implements Provider<T> {
 
-    private final PaperInjector injector;
+    private final AbstractInjector injector;
     private final Class<T> implementation;
 
-    public TransientProvider(PaperInjector injector, Class<T> implementation) {
+    public TransientProvider(AbstractInjector injector, Class<T> implementation) {
         this.injector = injector;
         this.implementation = implementation;
     }

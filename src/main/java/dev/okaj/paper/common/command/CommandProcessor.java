@@ -8,12 +8,12 @@ import java.util.List;
 
 public final class CommandProcessor implements ClassProcessor {
 
-    private final PaperInjector injector;
+    private final AbstractInjector injector;
     private final CommandScanner scanner;
     private final CommandRegistry registry;
 
 
-    public CommandProcessor(PaperInjector injector, CommandRegistry registry, ParameterResolverRegistry parameters) {
+    public CommandProcessor(AbstractInjector injector, CommandRegistry registry, ParameterResolverRegistry parameters) {
         this.injector = injector;
         this.registry = registry;
 

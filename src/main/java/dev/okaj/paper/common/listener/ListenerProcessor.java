@@ -29,7 +29,7 @@ public final class ListenerProcessor implements ClassProcessor {
 
             org.bukkit.event.Listener listener = (org.bukkit.event.Listener) injector.get(clazz);
 
-            pluginManager.registerEvents(listener, injector.getPlugin());
+            pluginManager.registerEvents(listener, injector.plugin());
         }
     }
 }

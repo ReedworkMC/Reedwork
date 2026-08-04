@@ -1,6 +1,6 @@
 package dev.okaj.paper.common.module;
 
-import dev.okaj.paper.common.PaperContext;
+import dev.okaj.paper.common.ApplicationContext;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +17,7 @@ public final class ModuleManager {
         modules.add(module);
     }
 
-    public void initialize(PaperContext context) {
+    public void initialize(ApplicationContext context) {
         for (PaperModule module : modules) {
             module.initialize(context);
         }

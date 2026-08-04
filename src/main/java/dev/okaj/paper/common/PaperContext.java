@@ -1,34 +1,45 @@
 package dev.okaj.paper.common;
 
+import dev.okaj.paper.common.inject.AbstractInjector;
 import dev.okaj.paper.common.inject.PaperInjector;
 import dev.okaj.paper.common.module.ModuleManager;
+import io.papermc.paper.plugin.lifecycle.event.LifecycleEventManager;
+import io.papermc.paper.plugin.lifecycle.event.LifecycleEventOwner;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public final class PaperContext {
+public final class PaperContext implements ApplicationContext {
 
-    private final JavaPlugin plugin;
     private final PaperInjector injector;
     private final ModuleManager moduleManager;
+    private final PaperLogger logger;
 
-    public PaperContext(JavaPlugin plugin, PaperInjector injector, ModuleManager moduleManager) {
-        this.plugin = plugin;
+    public PaperContext(PaperInjector injector, ModuleManager moduleManager) {
         this.injector = injector;
         this.moduleManager = moduleManager;
+        this.logger = new BukkitLoggerAdapter(injector.plugin().getLogger());
     }
 
     public JavaPlugin plugin() {
-        return plugin;
+        return injector.plugin();
     }
 
-    public PaperInjector injector() {
+    @Override
+    public AbstractInjector injector() {
         return injector;
     }
 
+    @Override
     public ModuleManager modules() {
         return moduleManager;
     }
 
-    public java.util.logging.Logger logger() {
-        return plugin.getLogger();
+    @Override
+    public PaperLogger logger() {
+        return logger;
+    }
+
+    @Override
+    public LifecycleEventManager<? extends LifecycleEventOwner> lifecycleManager() {
+        return plugin().getLifecycleManager();
     }
 }

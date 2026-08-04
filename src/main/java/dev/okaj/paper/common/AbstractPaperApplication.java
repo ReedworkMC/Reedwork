@@ -1,17 +1,23 @@
 package dev.okaj.paper.common;
 
-import dev.okaj.paper.common.inject.PaperInjector;
+import dev.okaj.paper.common.inject.AbstractInjector;
 import dev.okaj.paper.common.inject.ServiceRegistry;
 import dev.okaj.paper.common.module.ModuleManager;
 
 public abstract class AbstractPaperApplication {
 
-    protected final PaperInjector injector;
+    protected final AbstractInjector injector;
     protected final ModuleManager moduleManager;
+    protected final ApplicationContext context;
 
-    protected AbstractPaperApplication(PaperInjector injector) {
+    protected AbstractPaperApplication(AbstractInjector injector, ModuleManager moduleManager, ApplicationContext context) {
         this.injector = injector;
-        this.moduleManager = new ModuleManager();
+        this.moduleManager = moduleManager;
+        this.context = context;
+    }
+
+    public ApplicationContext context() {
+        return context;
     }
 
     public AbstractPaperApplication scan(String packageName) {
@@ -27,7 +33,7 @@ public abstract class AbstractPaperApplication {
         return injector.getRegistry();
     }
 
-    PaperInjector injector() {
+    AbstractInjector injector() {
         return injector;
     }
 

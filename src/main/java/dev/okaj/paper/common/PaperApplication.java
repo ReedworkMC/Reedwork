@@ -1,21 +1,35 @@
 package dev.okaj.paper.common;
 
 import dev.okaj.paper.common.command.CommandModule;
+import dev.okaj.paper.common.inject.AbstractInjector;
 import dev.okaj.paper.common.inject.PaperInjector;
-import dev.okaj.paper.common.inject.ServiceRegistry;
 import dev.okaj.paper.common.listener.ListenerModule;
+import dev.okaj.paper.common.module.ModuleManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class PaperApplication extends AbstractPaperApplication {
 
-    public PaperApplication(JavaPlugin plugin) {
-        super(new PaperInjector(plugin));
-
-        PaperContext paperContext = new PaperContext(plugin, injector, moduleManager);
+    public PaperApplication(PaperInjector injector, ModuleManager modules, PaperContext context) {
+        super(injector, modules, context);
 
         installDefaults();
 
-        moduleManager.initialize(paperContext);
+        moduleManager.initialize(context);
+    }
+
+    public static PaperApplication create(JavaPlugin plugin) {
+        PaperInjector injector = new PaperInjector(plugin);
+        ModuleManager modules = new ModuleManager();
+        PaperContext context =
+                new PaperContext(
+                        injector,
+                        modules
+                );
+        return new PaperApplication(
+                injector,
+                modules,
+                context
+        );
     }
 
     private void installDefaults() {

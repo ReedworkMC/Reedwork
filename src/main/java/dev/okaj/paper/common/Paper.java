@@ -9,10 +9,10 @@ public final class Paper {
     //todo enchantments
 
     public static PaperApplication create(JavaPlugin plugin) {
-        return new PaperApplication(plugin);
+        return PaperApplication.create(plugin);
     }
 
-    public static PaperBootstrapApplication bootstrap(BootstrapContext context){
-        return new PaperBootstrapApplication(context);
+    public static PaperBootstrapApplication bootstrap(BootstrapContext bootstrap) {
+        return PaperBootstrapApplication.create(bootstrap);
     }
 }

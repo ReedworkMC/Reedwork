@@ -1,94 +1,47 @@
 package dev.okaj.paper.common.inject;
 
+import dev.okaj.paper.common.BukkitLoggerAdapter;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.logging.Level;
+import java.io.File;
 
-public final class PaperInjector {
+public final class PaperInjector extends AbstractInjector {
 
-    private final JavaPlugin plugin;
-    private final ServiceRegistry registry;
-    private final ClassScanner scanner;
-    private final ConstructorResolver resolver;
-    private final CreationContext creationContext;
-
-    private final List<ClassProcessor> processors = new ArrayList<>();
+    public final JavaPlugin plugin;
 
     public PaperInjector(JavaPlugin plugin) {
-        this.plugin = plugin;
-        this.registry = new ServiceRegistry();
-        this.scanner = new ClassScanner(plugin);
+        super(
+                new ServiceRegistry(),
+                new ClassScanner(
+                        plugin.getClass().getClassLoader(), // I think it works! you think it's better to use: BootstrapInjector.class.getClassLoader(),
+                        pluginFile(plugin.getClass()),
+                        new BukkitLoggerAdapter(plugin.getLogger())
+                ),
+                new CreationContext(),
+                new BukkitLoggerAdapter(plugin.getLogger())
+        );
         this.resolver = new ConstructorResolver(this);
-        this.creationContext = new CreationContext();
+        this.plugin = plugin;
 
         registry.registerSingleton(JavaPlugin.class, "", plugin);
         registry.registerSingleton(plugin.getClass(), "", plugin);
     }
 
-    public void addProcessor(ClassProcessor processor) {
-        processors.add(processor);
-    }
-
-    public void scan(String packageName) {
-        List<Class<?>> classes = scanner.scan(packageName);
-
-        for (Class<?> clazz : classes) {
-            plugin.getLogger().log(Level.INFO, "Found: " + clazz.getName());
-        }
-
-        for (ClassProcessor processor : processors) {
-            processor.process(classes);
-        }
-    }
-
-    public <T> T get(Class<T> type, String name) {
-        T instance = registry.get(type, name);
-        if (instance != null) {
-            return instance;
-        }
-
-        if (type.isInterface()) {
-            throw new DependencyException("No binding found for interface: " + type.getName());
-        }
-
-        return create(type);
-    }
-
-    public <T> T get(Class<T> type) {
-        return get(type, "");
-    }
-
-    public <T> T create(Class<T> type) {
-        if (creationContext.contains(type)) {
-            throw new DependencyException("Circular dependency detected:\n"
-                    + creationContext.describe(type));
-        }
-
-        creationContext.push(type);
-
+    private static File pluginFile(Class<?> clazz) {
         try {
-            Object instance = resolver.create(type);
-            Scope scope = ScopeResolver.resolve(type);
-
-            if (scope == Scope.SINGLETON) {
-                registry.registerSingleton(type, "", instance);
-                return type.cast(instance);
-            }
-
-            return type.cast(resolver.create(type));
-
-        } finally {
-            creationContext.pop();
+            return new File(
+                    clazz.getProtectionDomain()
+                            .getCodeSource()
+                            .getLocation()
+                            .toURI()
+            );
+        } catch (Exception e) {
+            throw new DependencyException("Could not resolve plugin source", e);
         }
     }
 
-    public ServiceRegistry getRegistry() {
-        return registry;
-    }
-
-    public JavaPlugin getPlugin() {
+    public @NotNull JavaPlugin plugin() {
         return plugin;
     }
 }

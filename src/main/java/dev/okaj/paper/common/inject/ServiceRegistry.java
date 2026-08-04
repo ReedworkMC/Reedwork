@@ -17,7 +17,7 @@ public final class ServiceRegistry {
         providers.put(new ServiceKey(type, name), new SingletonProvider<>(instance));
     }
 
-    public <T> void registerTransient(Class<T> type, String name, Class<? extends T> implementation, PaperInjector injector) {
+    public <T> void registerTransient(Class<T> type, String name, Class<? extends T> implementation, AbstractInjector injector) {
         providers.put(new ServiceKey(type, name), new TransientProvider<>(injector, implementation));
     }
 

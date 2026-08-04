@@ -9,9 +9,9 @@ import java.util.Arrays;
 
 public final class ConstructorResolver {
 
-    private final PaperInjector injector;
+    private final AbstractInjector injector;
 
-    public ConstructorResolver(PaperInjector injector) {
+    public ConstructorResolver(AbstractInjector injector) {
         this.injector = injector;
     }
 
