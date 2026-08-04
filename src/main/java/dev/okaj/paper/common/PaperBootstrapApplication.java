@@ -1,6 +1,7 @@
 package dev.okaj.paper.common;
 
 import dev.okaj.paper.common.inject.BootstrapInjector;
+import dev.okaj.paper.common.inject.InjectorFactory;
 import dev.okaj.paper.common.module.ModuleManager;
 import io.papermc.paper.plugin.bootstrap.BootstrapContext;
 import org.jetbrains.annotations.ApiStatus;
@@ -17,7 +18,7 @@ public class PaperBootstrapApplication extends AbstractPaperApplication {
     }
 
     public static PaperBootstrapApplication create(BootstrapContext bootstrap) {
-        BootstrapInjector injector = new BootstrapInjector(bootstrap);
+        BootstrapInjector injector = InjectorFactory.create(bootstrap);
         ModuleManager modules = new ModuleManager();
         BootstrapPaperContext context =
                 new BootstrapPaperContext(

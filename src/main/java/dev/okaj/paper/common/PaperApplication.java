@@ -1,6 +1,7 @@
 package dev.okaj.paper.common;
 
 import dev.okaj.paper.common.command.CommandModule;
+import dev.okaj.paper.common.inject.InjectorFactory;
 import dev.okaj.paper.common.inject.PaperInjector;
 import dev.okaj.paper.common.listener.ListenerModule;
 import dev.okaj.paper.common.module.ModuleManager;
@@ -17,7 +18,7 @@ public final class PaperApplication extends AbstractPaperApplication {
     }
 
     public static PaperApplication create(JavaPlugin plugin) {
-        PaperInjector injector = new PaperInjector(plugin);
+        PaperInjector injector = InjectorFactory.create(plugin);
         ModuleManager modules = new ModuleManager();
         PaperContext context =
                 new PaperContext(

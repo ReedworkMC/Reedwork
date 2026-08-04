@@ -4,24 +4,17 @@ import dev.okaj.paper.common.BootstrapLoggerAdapter;
 import io.papermc.paper.plugin.bootstrap.BootstrapContext;
 import org.jetbrains.annotations.ApiStatus;
 
-import java.io.File;
-
 @ApiStatus.Experimental
 public final class BootstrapInjector extends AbstractInjector {
 
-    public BootstrapInjector(BootstrapContext context) {
-        super(
-                new ServiceRegistry(),
-                new ClassScanner(
-                        BootstrapInjector.class.getClassLoader(),
-                        new File(context.getPluginSource().toUri()),
-                        new BootstrapLoggerAdapter(context.getLogger())
-                ),
-                new CreationContext(),
-                new BootstrapLoggerAdapter(context.getLogger())
-        );
-        this.resolver = new ConstructorResolver(this);
+    private final BootstrapContext bootstrap;
 
-        registry.registerSingleton(BootstrapContext.class, "", context);
+    public BootstrapInjector(ServiceRegistry registry, ClassScanner classScanner, CreationContext creationContext, BootstrapLoggerAdapter logger, BootstrapContext bootstrap) {
+        super(registry, classScanner, creationContext, logger);
+        this.bootstrap = bootstrap;
+    }
+
+    public BootstrapContext bootstrap() {
+        return bootstrap;
     }
 }

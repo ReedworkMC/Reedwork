@@ -12,7 +12,7 @@ public abstract class AbstractInjector {
     protected final CreationContext creationContext;
     protected final List<ClassProcessor> processors = new ArrayList<>();
     protected final PaperLogger logger;
-    protected ConstructorResolver resolver; //fixme Injector-Factory!!!
+    protected final ConstructorResolver resolver;
 
     //todo later
     // Injector
@@ -27,6 +27,7 @@ public abstract class AbstractInjector {
         this.scanner = scanner;
         this.creationContext = creationContext;
         this.logger = logger;
+        this.resolver = new ConstructorResolver(this);
     }
 
     public void addProcessor(ClassProcessor processor) {

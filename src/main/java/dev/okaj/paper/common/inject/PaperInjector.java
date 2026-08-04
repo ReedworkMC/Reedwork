@@ -10,35 +10,11 @@ public final class PaperInjector extends AbstractInjector {
 
     public final JavaPlugin plugin;
 
-    public PaperInjector(JavaPlugin plugin) {
-        super(
-                new ServiceRegistry(),
-                new ClassScanner(
-                        plugin.getClass().getClassLoader(),
-                        pluginFile(plugin.getClass()),
-                        new BukkitLoggerAdapter(plugin.getLogger())
-                ),
-                new CreationContext(),
-                new BukkitLoggerAdapter(plugin.getLogger())
-        );
-        this.resolver = new ConstructorResolver(this);
+    public PaperInjector(ServiceRegistry registry, ClassScanner classScanner, CreationContext creationContext, BukkitLoggerAdapter logger, JavaPlugin plugin) {
+        super(registry, classScanner, creationContext, logger);
         this.plugin = plugin;
 
-        registry.registerSingleton(JavaPlugin.class, "", plugin);
-        registry.registerSingleton(plugin.getClass(), "", plugin);
-    }
 
-    private static File pluginFile(Class<?> clazz) {
-        try {
-            return new File(
-                    clazz.getProtectionDomain()
-                            .getCodeSource()
-                            .getLocation()
-                            .toURI()
-            );
-        } catch (Exception e) {
-            throw new DependencyException("Could not resolve plugin source", e);
-        }
     }
 
     public @NotNull JavaPlugin plugin() {
