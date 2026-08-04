@@ -13,7 +13,7 @@ public final class BootstrapInjector extends AbstractInjector {
         super(
                 new ServiceRegistry(),
                 new ClassScanner(
-                        context.getPluginSource().getClass().getClassLoader(),
+                        BootstrapInjector.class.getClassLoader(),
                         new File(context.getPluginSource().toUri()),
                         new BootstrapLoggerAdapter(context.getLogger())
                 ),

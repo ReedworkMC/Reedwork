@@ -14,7 +14,7 @@ public final class PaperInjector extends AbstractInjector {
         super(
                 new ServiceRegistry(),
                 new ClassScanner(
-                        plugin.getClass().getClassLoader(), // I think it works! you think it's better to use: BootstrapInjector.class.getClassLoader(),
+                        plugin.getClass().getClassLoader(),
                         pluginFile(plugin.getClass()),
                         new BukkitLoggerAdapter(plugin.getLogger())
                 ),

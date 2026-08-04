@@ -45,7 +45,8 @@ public final class ClassScanner {
                                 );
 
                             } catch (Throwable e) {
-                                logger.warn("Failed loading " + className);
+                                String classLoaderName = classLoader == null ? "null" : classLoader.getName();
+                                logger.error("Failed loading " + className + " using ClassLoader: " + classLoaderName, e);
                             }
                         });
             }

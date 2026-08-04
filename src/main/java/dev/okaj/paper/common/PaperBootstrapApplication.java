@@ -33,8 +33,8 @@ public class PaperBootstrapApplication extends AbstractPaperApplication {
     }
 
     private void installDefaults() {
-        // später:
-        // moduleManager.install(new BootstrapCommandModule());
+        //todo:
         // moduleManager.install(new EnchantmentModule());
+        // registries
     }
 }
