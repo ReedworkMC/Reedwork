@@ -3,18 +3,19 @@ package dev.okaj.paper.common.command;
 import dev.okaj.paper.common.annotation.Command;
 import dev.okaj.paper.common.command.parameter.ParameterResolverRegistry;
 import dev.okaj.paper.common.inject.injector.AbstractInjector;
+import dev.okaj.paper.common.inject.injector.InjectorDependencyProvider;
 import dev.okaj.paper.common.inject.processor.ClassProcessor;
 
 import java.util.List;
 
 public final class CommandProcessor implements ClassProcessor {
 
-    private final AbstractInjector injector;
+    private final InjectorDependencyProvider injector;
     private final CommandScanner scanner;
     private final CommandRegistry registry;
 
 
-    public CommandProcessor(AbstractInjector injector, CommandRegistry registry, ParameterResolverRegistry parameters) {
+    public CommandProcessor(InjectorDependencyProvider injector, CommandRegistry registry, ParameterResolverRegistry parameters) {
         this.injector = injector;
         this.registry = registry;
 
