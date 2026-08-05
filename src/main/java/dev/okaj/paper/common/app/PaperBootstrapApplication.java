@@ -1,6 +1,7 @@
 package dev.okaj.paper.common.app;
 
 import dev.okaj.paper.common.app.context.BootstrapPaperContext;
+import dev.okaj.paper.common.enchantment.module.EnchantmentModule;
 import dev.okaj.paper.common.inject.injector.BootstrapInjector;
 import dev.okaj.paper.common.inject.injector.InjectorFactory;
 import dev.okaj.paper.common.module.ModuleManager;
@@ -35,8 +36,6 @@ public class PaperBootstrapApplication extends AbstractPaperApplication {
     }
 
     private void installDefaults() {
-        //todo:
-        // moduleManager.install(new EnchantmentModule());
-        // registries
+        moduleManager.install(new EnchantmentModule());
     }
 }

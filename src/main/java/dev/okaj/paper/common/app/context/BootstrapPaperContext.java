@@ -45,7 +45,7 @@ public final class BootstrapPaperContext implements ApplicationContext {
     }
 
     @Override
-    public LifecycleEventManager<? extends LifecycleEventOwner> lifecycleManager() {
+    public LifecycleEventManager<BootstrapContext> lifecycleManager() {
         return context.getLifecycleManager();
     }
 }
