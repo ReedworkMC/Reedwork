@@ -1,9 +1,6 @@
 package dev.okaj.paper.common.command.paper;
 
-import dev.okaj.paper.common.command.CommandArguments;
-import dev.okaj.paper.common.command.CommandContext;
-import dev.okaj.paper.common.command.CommandDefinition;
-import dev.okaj.paper.common.command.CommandInvoker;
+import dev.okaj.paper.common.command.*;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;

@@ -36,6 +36,9 @@ public final class CommandInvoker {
             throw new CommandException("Command execution failed", e.getCause());
         } catch (IllegalAccessException e) {
             throw new CommandException("Could not access command method", e);
+        } catch (CommandException e) {
+            // Parsing Failed
+            return false;
         }
     }
 
