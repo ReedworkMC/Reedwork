@@ -1,5 +1,7 @@
 package dev.okaj.paper.common;
 
+import dev.okaj.paper.common.app.PaperApplication;
+import dev.okaj.paper.common.app.PaperBootstrapApplication;
 import io.papermc.paper.plugin.bootstrap.BootstrapContext;
 import org.bukkit.plugin.java.JavaPlugin;
 

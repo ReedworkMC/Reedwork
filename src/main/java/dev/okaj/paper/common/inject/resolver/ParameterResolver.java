@@ -1,7 +1,7 @@
 package dev.okaj.paper.common.inject.resolver;
 
 import dev.okaj.paper.common.annotation.Named;
-import dev.okaj.paper.common.inject.DependencyProvider;
+import dev.okaj.paper.common.inject.injector.InjectorDependencyProvider;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Parameter;
@@ -9,9 +9,9 @@ import java.util.Arrays;
 
 public final class ParameterResolver {
 
-    private final DependencyProvider provider;
+    private final InjectorDependencyProvider provider;
 
-    public ParameterResolver(DependencyProvider provider) {
+    public ParameterResolver(InjectorDependencyProvider provider) {
         this.provider = provider;
     }
 

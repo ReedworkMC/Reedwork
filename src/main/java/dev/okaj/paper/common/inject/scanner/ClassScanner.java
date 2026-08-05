@@ -1,6 +1,6 @@
 package dev.okaj.paper.common.inject.scanner;
 
-import dev.okaj.paper.common.PaperLogger;
+import dev.okaj.paper.common.logger.PaperLogger;
 
 import java.io.File;
 import java.util.ArrayList;

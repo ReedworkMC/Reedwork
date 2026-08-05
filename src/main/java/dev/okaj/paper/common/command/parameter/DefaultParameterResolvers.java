@@ -1,7 +1,7 @@
 package dev.okaj.paper.common.command.parameter;
 
 import dev.okaj.paper.common.command.parameter.resolver.*;
-import dev.okaj.paper.common.command.parameter.resolver.primitiv.*;
+import dev.okaj.paper.common.command.parameter.resolver.primitive.*;
 
 public final class DefaultParameterResolvers {
 

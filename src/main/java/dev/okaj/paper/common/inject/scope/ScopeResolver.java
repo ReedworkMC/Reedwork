@@ -2,7 +2,7 @@ package dev.okaj.paper.common.inject.scope;
 
 import dev.okaj.paper.common.annotation.Singleton;
 import dev.okaj.paper.common.annotation.Transient;
-import dev.okaj.paper.common.inject.DependencyException;
+import dev.okaj.paper.common.inject.exception.DependencyException;
 
 import java.lang.annotation.Annotation;
 

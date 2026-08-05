@@ -1,7 +1,8 @@
 package dev.okaj.paper.common.inject.factory;
 
-import dev.okaj.paper.common.inject.*;
 import dev.okaj.paper.common.inject.context.CreationContext;
+import dev.okaj.paper.common.inject.exception.DependencyException;
+import dev.okaj.paper.common.inject.injector.InjectorDependencyProvider;
 import dev.okaj.paper.common.inject.registry.ServiceRegistry;
 import dev.okaj.paper.common.inject.resolver.ParameterResolver;
 import dev.okaj.paper.common.inject.scope.Scope;
@@ -17,7 +18,7 @@ public final class InstanceFactory {
     private final CreationContext creationContext;
     private final ServiceRegistry registry;
 
-    public InstanceFactory(DependencyProvider provider, ServiceRegistry registry) {
+    public InstanceFactory(InjectorDependencyProvider provider, ServiceRegistry registry) {
         this.selector = new ConstructorSelector();
         this.parameterResolver = new ParameterResolver(provider);
         this.instantiator = new ObjectInstantiator();

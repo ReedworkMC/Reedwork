@@ -1,15 +1,12 @@
 package dev.okaj.paper.common.command.paper;
 
-import dev.okaj.paper.common.PaperLogger;
+import dev.okaj.paper.common.logger.PaperLogger;
 import dev.okaj.paper.common.command.CommandDefinition;
 import dev.okaj.paper.common.command.CommandRegistry;
 import io.papermc.paper.plugin.lifecycle.event.LifecycleEventManager;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Arrays;
-import java.util.List;
 
 public final class PaperCommandRegistry implements CommandRegistry {
 

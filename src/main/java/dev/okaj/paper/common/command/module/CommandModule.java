@@ -1,6 +1,6 @@
 package dev.okaj.paper.common.command.module;
 
-import dev.okaj.paper.common.ApplicationContext;
+import dev.okaj.paper.common.app.context.ApplicationContext;
 import dev.okaj.paper.common.command.CommandInvoker;
 import dev.okaj.paper.common.command.CommandProcessor;
 import dev.okaj.paper.common.command.paper.PaperCommandBuilder;
@@ -21,7 +21,7 @@ public final class CommandModule implements PaperModule {
         CommandInvoker invoker = new CommandInvoker(parameters);
         PaperCommandExecutor executor = new PaperCommandExecutor(invoker);
         PaperCommandBuilder builder = new PaperCommandBuilder(executor);
-        PaperCommandRegistry registry = new PaperCommandRegistry(context.logger(), context.lifecycleManager(), builder); //fixme
+        PaperCommandRegistry registry = new PaperCommandRegistry(context.logger(), context.lifecycleManager(), builder);
 
         context.injector().addProcessor(
                 new CommandProcessor(

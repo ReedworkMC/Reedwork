@@ -1,6 +1,6 @@
 package dev.okaj.paper.common.module;
 
-import dev.okaj.paper.common.ApplicationContext;
+import dev.okaj.paper.common.app.context.ApplicationContext;
 
 import java.util.ArrayList;
 import java.util.List;
