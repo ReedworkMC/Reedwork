@@ -56,6 +56,7 @@ public abstract class AbstractInjector implements DependencyProvider {
         return create(type);
     }
 
+    @Override
     public <T> T create(Class<T> type) {
        return factory.create(type);
     }

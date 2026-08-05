@@ -1,28 +1,16 @@
 package dev.okaj.paper.common.inject;
 
-import dev.okaj.paper.common.inject.provider.FactoryProvider;
 import dev.okaj.paper.common.inject.provider.Provider;
-import dev.okaj.paper.common.inject.provider.SingletonProvider;
-import dev.okaj.paper.common.inject.provider.TransientProvider;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.Supplier;
 
 public final class ServiceRegistry {
 
     private final Map<ServiceKey, Provider<?>> providers = new ConcurrentHashMap<>();
 
-    public <T> void registerSingleton(Class<?> type, String name, T instance) {
-        providers.put(new ServiceKey(type, name), new SingletonProvider<>(instance));
-    }
-
-    public <T> void registerTransient(Class<T> type, String name, Class<? extends T> implementation, AbstractInjector injector) {
-        providers.put(new ServiceKey(type, name), new TransientProvider<>(injector, implementation));
-    }
-
-    public <T> void registerFactory(Class<T> type, String name, Supplier<? extends T> supplier) {
-        providers.put(new ServiceKey(type, name), new FactoryProvider<>(supplier));
+    public void register(ServiceKey key, Provider<?> provider) {
+        providers.put(key, provider);
     }
 
     @SuppressWarnings("unchecked")
