@@ -1,4 +1,11 @@
-package dev.okaj.paper.common.inject;
+package dev.okaj.paper.common.inject.factory;
+
+import dev.okaj.paper.common.inject.*;
+import dev.okaj.paper.common.inject.context.CreationContext;
+import dev.okaj.paper.common.inject.registry.ServiceRegistry;
+import dev.okaj.paper.common.inject.resolver.ParameterResolver;
+import dev.okaj.paper.common.inject.scope.Scope;
+import dev.okaj.paper.common.inject.scope.ScopeResolver;
 
 import java.lang.reflect.Constructor;
 

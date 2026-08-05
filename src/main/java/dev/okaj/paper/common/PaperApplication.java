@@ -1,8 +1,8 @@
 package dev.okaj.paper.common;
 
 import dev.okaj.paper.common.command.CommandModule;
-import dev.okaj.paper.common.inject.InjectorFactory;
-import dev.okaj.paper.common.inject.PaperInjector;
+import dev.okaj.paper.common.inject.injector.InjectorFactory;
+import dev.okaj.paper.common.inject.injector.PaperInjector;
 import dev.okaj.paper.common.listener.ListenerModule;
 import dev.okaj.paper.common.module.ModuleManager;
 import org.bukkit.plugin.java.JavaPlugin;

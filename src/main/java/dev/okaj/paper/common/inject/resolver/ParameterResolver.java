@@ -1,6 +1,7 @@
-package dev.okaj.paper.common.inject;
+package dev.okaj.paper.common.inject.resolver;
 
 import dev.okaj.paper.common.annotation.Named;
+import dev.okaj.paper.common.inject.DependencyProvider;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Parameter;

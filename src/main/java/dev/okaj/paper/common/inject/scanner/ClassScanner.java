@@ -1,4 +1,4 @@
-package dev.okaj.paper.common.inject;
+package dev.okaj.paper.common.inject.scanner;
 
 import dev.okaj.paper.common.PaperLogger;
 

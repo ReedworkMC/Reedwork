@@ -1,8 +1,8 @@
 package dev.okaj.paper.common.listener;
 
 import dev.okaj.paper.common.annotation.EventListener;
-import dev.okaj.paper.common.inject.ClassProcessor;
-import dev.okaj.paper.common.inject.PaperInjector;
+import dev.okaj.paper.common.inject.processor.ClassProcessor;
+import dev.okaj.paper.common.inject.injector.PaperInjector;
 import org.bukkit.plugin.PluginManager;
 
 import java.util.List;

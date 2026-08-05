@@ -1,7 +1,7 @@
 package dev.okaj.paper.common;
 
-import dev.okaj.paper.common.inject.AbstractInjector;
-import dev.okaj.paper.common.inject.PaperInjector;
+import dev.okaj.paper.common.inject.injector.AbstractInjector;
+import dev.okaj.paper.common.inject.injector.PaperInjector;
 import dev.okaj.paper.common.module.ModuleManager;
 import io.papermc.paper.plugin.lifecycle.event.LifecycleEventManager;
 import io.papermc.paper.plugin.lifecycle.event.LifecycleEventOwner;

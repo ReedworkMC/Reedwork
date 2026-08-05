@@ -1,4 +1,6 @@
-package dev.okaj.paper.common.inject;
+package dev.okaj.paper.common.inject.factory;
+
+import dev.okaj.paper.common.inject.DependencyException;
 
 import java.lang.reflect.Constructor;
 import java.util.Arrays;

@@ -1,7 +1,7 @@
 package dev.okaj.paper.common;
 
-import dev.okaj.paper.common.inject.AbstractInjector;
-import dev.okaj.paper.common.inject.ServiceRegistry;
+import dev.okaj.paper.common.inject.injector.AbstractInjector;
+import dev.okaj.paper.common.inject.registry.ServiceRegistry;
 import dev.okaj.paper.common.module.ModuleManager;
 
 public abstract class AbstractPaperApplication {

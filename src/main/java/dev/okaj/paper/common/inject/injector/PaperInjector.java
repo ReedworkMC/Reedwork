@@ -1,6 +1,8 @@
-package dev.okaj.paper.common.inject;
+package dev.okaj.paper.common.inject.injector;
 
 import dev.okaj.paper.common.BukkitLoggerAdapter;
+import dev.okaj.paper.common.inject.scanner.ClassScanner;
+import dev.okaj.paper.common.inject.registry.ServiceRegistry;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 

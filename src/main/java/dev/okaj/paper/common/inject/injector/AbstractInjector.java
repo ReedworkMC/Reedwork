@@ -1,6 +1,11 @@
-package dev.okaj.paper.common.inject;
+package dev.okaj.paper.common.inject.injector;
 
 import dev.okaj.paper.common.PaperLogger;
+import dev.okaj.paper.common.inject.*;
+import dev.okaj.paper.common.inject.factory.InstanceFactory;
+import dev.okaj.paper.common.inject.processor.ClassProcessor;
+import dev.okaj.paper.common.inject.registry.ServiceRegistry;
+import dev.okaj.paper.common.inject.scanner.ClassScanner;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package dev.okaj.paper.common.inject;
+package dev.okaj.paper.common.inject.registry;
 
 import java.util.Objects;
 

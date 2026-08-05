@@ -1,6 +1,6 @@
 package dev.okaj.paper.common;
 
-import dev.okaj.paper.common.inject.ServiceKey;
+import dev.okaj.paper.common.inject.registry.ServiceKey;
 import dev.okaj.paper.common.inject.provider.FactoryProvider;
 import dev.okaj.paper.common.inject.provider.SingletonProvider;
 import dev.okaj.paper.common.inject.provider.TransientProvider;

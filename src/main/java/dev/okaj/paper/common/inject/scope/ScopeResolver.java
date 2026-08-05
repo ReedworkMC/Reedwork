@@ -1,7 +1,8 @@
-package dev.okaj.paper.common.inject;
+package dev.okaj.paper.common.inject.scope;
 
 import dev.okaj.paper.common.annotation.Singleton;
 import dev.okaj.paper.common.annotation.Transient;
+import dev.okaj.paper.common.inject.DependencyException;
 
 import java.lang.annotation.Annotation;
 

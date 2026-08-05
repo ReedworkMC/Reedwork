@@ -1,4 +1,4 @@
-package dev.okaj.paper.common.inject;
+package dev.okaj.paper.common.inject.context;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
