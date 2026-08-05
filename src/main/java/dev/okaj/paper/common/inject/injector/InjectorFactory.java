@@ -1,5 +1,7 @@
 package dev.okaj.paper.common.inject.injector;
 
+import dev.okaj.paper.common.inject.provider.SingletonProvider;
+import dev.okaj.paper.common.inject.registry.ServiceKey;
 import dev.okaj.paper.common.logger.BootstrapLoggerAdapter;
 import dev.okaj.paper.common.logger.BukkitLoggerAdapter;
 import dev.okaj.paper.common.inject.scanner.ClassScanner;
@@ -25,8 +27,8 @@ public final class InjectorFactory {
                 plugin
         );
 
-        injector.registry.registerSingleton(JavaPlugin.class, "", plugin);
-        injector.registry.registerSingleton(plugin.getClass(), "", plugin);
+        injector.registry.register(new ServiceKey(JavaPlugin.class, ""), new SingletonProvider<>(plugin));
+        injector.registry.register(new ServiceKey(plugin.getClass(), ""), new SingletonProvider<>(plugin));
 
         return injector;
     }
@@ -44,7 +46,7 @@ public final class InjectorFactory {
                 bootstrap
         );
 
-        injector.registry.registerSingleton(BootstrapContext.class, "", bootstrap);
+        injector.registry.register(new ServiceKey(BootstrapContext.class, ""), new SingletonProvider<>(bootstrap));
 
         return injector;
     }

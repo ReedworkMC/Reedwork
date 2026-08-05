@@ -3,6 +3,8 @@ package dev.okaj.paper.common.inject.factory;
 import dev.okaj.paper.common.inject.context.CreationContext;
 import dev.okaj.paper.common.inject.exception.DependencyException;
 import dev.okaj.paper.common.inject.injector.InjectorDependencyProvider;
+import dev.okaj.paper.common.inject.provider.SingletonProvider;
+import dev.okaj.paper.common.inject.registry.ServiceKey;
 import dev.okaj.paper.common.inject.registry.ServiceRegistry;
 import dev.okaj.paper.common.inject.resolver.ParameterResolver;
 import dev.okaj.paper.common.inject.scope.Scope;
@@ -45,7 +47,7 @@ public final class InstanceFactory {
             T instance = type.cast(instantiator.instantiate(constructor, parameters));
 
             if (ScopeResolver.resolve(type) == Scope.SINGLETON) {
-                registry.registerSingleton(type, "", instance);
+                registry.register(new ServiceKey(type, ""), new SingletonProvider<>(instance));
             }
 
             return instance;
