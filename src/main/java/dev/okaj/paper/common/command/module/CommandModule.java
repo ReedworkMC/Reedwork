@@ -1,7 +1,8 @@
-package dev.okaj.paper.common.command;
+package dev.okaj.paper.common.command.module;
 
 import dev.okaj.paper.common.ApplicationContext;
-import dev.okaj.paper.common.PaperContext;
+import dev.okaj.paper.common.command.CommandInvoker;
+import dev.okaj.paper.common.command.CommandProcessor;
 import dev.okaj.paper.common.command.paper.PaperCommandBuilder;
 import dev.okaj.paper.common.command.paper.PaperCommandExecutor;
 import dev.okaj.paper.common.command.paper.PaperCommandRegistry;

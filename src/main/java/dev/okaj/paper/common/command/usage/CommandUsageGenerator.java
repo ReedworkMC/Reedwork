@@ -1,5 +1,6 @@
-package dev.okaj.paper.common.command;
+package dev.okaj.paper.common.command.usage;
 
+import dev.okaj.paper.common.command.CommandDefinition;
 import dev.okaj.paper.common.command.node.CommandNodeDefinition;
 
 public final class CommandUsageGenerator {

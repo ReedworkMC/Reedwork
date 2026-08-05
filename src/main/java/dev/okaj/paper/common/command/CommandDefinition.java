@@ -1,6 +1,7 @@
 package dev.okaj.paper.common.command;
 
 import dev.okaj.paper.common.command.node.CommandNodeDefinition;
+import dev.okaj.paper.common.command.usage.CommandUsageGenerator;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;

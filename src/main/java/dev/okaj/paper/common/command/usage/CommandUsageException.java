@@ -1,4 +1,6 @@
-package dev.okaj.paper.common.command;
+package dev.okaj.paper.common.command.usage;
+
+import dev.okaj.paper.common.command.CommandException;
 
 public final class CommandUsageException extends CommandException {
 
