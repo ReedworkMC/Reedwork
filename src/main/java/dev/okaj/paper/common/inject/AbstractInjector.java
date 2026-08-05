@@ -5,29 +5,20 @@ import dev.okaj.paper.common.PaperLogger;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class AbstractInjector {
+public abstract class AbstractInjector implements DependencyProvider {
 
     protected final ServiceRegistry registry;
     protected final ClassScanner scanner;
-    protected final CreationContext creationContext;
     protected final List<ClassProcessor> processors = new ArrayList<>();
     protected final PaperLogger logger;
-    protected final ConstructorResolver resolver;
 
-    //todo later
-    // Injector
-    // │
-    // ├── ServiceRegistry
-    // ├── InstanceFactory
-    // ├── DependencyResolver
-    // └── Scanner
+    protected final InstanceFactory factory;
 
-    protected AbstractInjector(ServiceRegistry registry, ClassScanner scanner, CreationContext creationContext, PaperLogger logger) {
+    protected AbstractInjector(ServiceRegistry registry, ClassScanner scanner, PaperLogger logger) {
         this.registry = registry;
         this.scanner = scanner;
-        this.creationContext = creationContext;
         this.logger = logger;
-        this.resolver = new ConstructorResolver(this);
+        factory = new InstanceFactory(this, registry);
     }
 
     public void addProcessor(ClassProcessor processor) {
@@ -46,10 +37,12 @@ public abstract class AbstractInjector {
         }
     }
 
+    @Override
     public <T> T get(Class<T> type) {
         return get(type, "");
     }
 
+    @Override
     public <T> T get(Class<T> type, String name) {
         T instance = registry.get(type, name);
         if (instance != null) {
@@ -64,27 +57,7 @@ public abstract class AbstractInjector {
     }
 
     public <T> T create(Class<T> type) {
-        if (creationContext.contains(type)) {
-            throw new DependencyException("Circular dependency detected:\n"
-                    + creationContext.describe(type));
-        }
-
-        creationContext.push(type);
-
-        try {
-            Object instance = resolver.create(type);
-            Scope scope = ScopeResolver.resolve(type);
-
-            if (scope == Scope.SINGLETON) {
-                registry.registerSingleton(type, "", instance);
-                return type.cast(instance);
-            }
-
-            return type.cast(instance);
-
-        } finally {
-            creationContext.pop();
-        }
+       return factory.create(type);
     }
 
     public ServiceRegistry getRegistry() {

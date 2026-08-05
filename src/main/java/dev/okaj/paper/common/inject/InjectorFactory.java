@@ -18,7 +18,6 @@ public final class InjectorFactory {
                         pluginFile(plugin.getClass()),
                         logger
                 ),
-                new CreationContext(),
                 logger,
                 plugin
         );
@@ -38,7 +37,6 @@ public final class InjectorFactory {
                         new File(bootstrap.getPluginSource().toUri()),
                         logger
                 ),
-                new CreationContext(),
                 logger,
                 bootstrap
         );

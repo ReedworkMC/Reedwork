@@ -9,8 +9,8 @@ public final class BootstrapInjector extends AbstractInjector {
 
     private final BootstrapContext bootstrap;
 
-    public BootstrapInjector(ServiceRegistry registry, ClassScanner classScanner, CreationContext creationContext, BootstrapLoggerAdapter logger, BootstrapContext bootstrap) {
-        super(registry, classScanner, creationContext, logger);
+    public BootstrapInjector(ServiceRegistry registry, ClassScanner classScanner, BootstrapLoggerAdapter logger, BootstrapContext bootstrap) {
+        super(registry, classScanner, logger);
         this.bootstrap = bootstrap;
     }
 

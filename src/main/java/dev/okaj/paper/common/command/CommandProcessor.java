@@ -3,6 +3,7 @@ package dev.okaj.paper.common.command;
 import dev.okaj.paper.common.annotation.Command;
 import dev.okaj.paper.common.command.parameter.ParameterResolverRegistry;
 import dev.okaj.paper.common.inject.*;
+import dev.okaj.paper.common.inject.AbstractInjector;
 
 import java.util.List;
 
