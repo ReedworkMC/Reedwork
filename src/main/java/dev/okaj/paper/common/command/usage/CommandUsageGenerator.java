@@ -11,7 +11,7 @@ public final class CommandUsageGenerator {
 
         for (CommandNodeDefinition node : definition.nodes()) {
             append(builder, node);
-        }
+        }//todo generate usable usage
 
         return builder.toString();
     }

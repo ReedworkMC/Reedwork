@@ -4,15 +4,18 @@ import dev.okaj.paper.common.annotation.Command;
 import dev.okaj.paper.common.annotation.CommandHandler;
 import dev.okaj.paper.common.annotation.SubCommand;
 import dev.okaj.paper.common.command.node.CommandNodeDefinition;
+import dev.okaj.paper.common.command.node.CommandNodeRegistry;
 
 import java.lang.reflect.Method;
 
 public final class CommandScanner {
 
     private final CommandMethodParser parser;
+    private final CommandNodeRegistry nodeRegistry;
 
-    public CommandScanner(CommandMethodParser parser) {
+    public CommandScanner(CommandMethodParser parser, CommandNodeRegistry nodeRegistry) {
         this.parser = parser;
+        this.nodeRegistry = nodeRegistry;
     }
 
     public CommandDefinition scan(Object instance) {
@@ -38,6 +41,7 @@ public final class CommandScanner {
             if (method.isAnnotationPresent(SubCommand.class)) {
                 validate(method);
                 CommandNodeDefinition node = parser.parse(method);
+                nodeRegistry.register(method, node);
                 definition.addNode(node);
             }
         }

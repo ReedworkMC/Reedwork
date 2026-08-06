@@ -49,12 +49,15 @@ public final class CommandMethodParser {
             CommandNodeDefinition node;
 
             if (isArgument(part)) {
+
+                String argumentName = part.substring(1, part.length() - 1);
+
                 Parameter parameter = findNextArgumentParameter(parameters, argumentIndex);
 
                 ParameterDefinition definition = new ParameterDefinition(parameter, argumentIndex++, argumentCount);
 
                 node = new ArgumentNodeDefinition(
-                        parameter.getName(),
+                        argumentName,
                         registry.resolve(parameter).argumentType(definition)
                 );
             } else {

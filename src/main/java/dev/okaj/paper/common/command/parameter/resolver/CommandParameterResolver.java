@@ -3,6 +3,7 @@ package dev.okaj.paper.common.command.parameter.resolver;
 import com.mojang.brigadier.arguments.ArgumentType;
 import com.mojang.brigadier.suggestion.SuggestionProvider;
 import dev.okaj.paper.common.command.CommandContext;
+import dev.okaj.paper.common.command.node.CommandNodeDefinition;
 import dev.okaj.paper.common.command.parameter.ParameterDefinition;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 
@@ -17,7 +18,7 @@ public interface CommandParameterResolver {
     Object resolve(
             CommandContext context,
             com.mojang.brigadier.context.CommandContext<CommandSourceStack> brigadier,
-            ParameterDefinition parameter
+            CommandNodeDefinition node
     );
 
     default SuggestionProvider<CommandSourceStack> suggestions(ParameterDefinition parameter) {

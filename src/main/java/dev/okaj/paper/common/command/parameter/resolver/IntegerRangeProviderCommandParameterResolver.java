@@ -3,18 +3,15 @@ package dev.okaj.paper.common.command.parameter.resolver;
 import com.google.common.collect.Range;
 import com.mojang.brigadier.arguments.ArgumentType;
 import dev.okaj.paper.common.command.CommandContext;
+import dev.okaj.paper.common.command.node.CommandNodeDefinition;
 import dev.okaj.paper.common.command.parameter.ParameterDefinition;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.argument.ArgumentTypes;
-import io.papermc.paper.command.brigadier.argument.range.DoubleRangeProvider;
 import io.papermc.paper.command.brigadier.argument.range.IntegerRangeProvider;
-import org.bukkit.entity.Entity;
-import org.jetbrains.annotations.ApiStatus;
 
 import java.lang.reflect.Parameter;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.util.List;
 
 public class IntegerRangeProviderCommandParameterResolver implements CommandParameterResolver {
     @Override
@@ -39,7 +36,7 @@ public class IntegerRangeProviderCommandParameterResolver implements CommandPara
     }
 
     @Override
-    public Object resolve(CommandContext context, com.mojang.brigadier.context.CommandContext<CommandSourceStack> brigadier, ParameterDefinition parameter) {
-        return brigadier.getArgument(parameter.name(), IntegerRangeProvider.class).range();
+    public Object resolve(CommandContext context, com.mojang.brigadier.context.CommandContext<CommandSourceStack> brigadier, CommandNodeDefinition node) {
+        return brigadier.getArgument(node.name(), IntegerRangeProvider.class).range();
     }
 }
