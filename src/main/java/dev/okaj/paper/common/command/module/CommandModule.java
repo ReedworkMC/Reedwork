@@ -21,7 +21,7 @@ public final class CommandModule implements PaperModule {
 
         CommandNodeRegistry nodeRegistry = new CommandNodeRegistry();
 
-        CommandInvoker invoker = new CommandInvoker(parameters, nodeRegistry);
+        CommandInvoker invoker = new CommandInvoker(parameters, nodeRegistry, context.logger());
         PaperCommandExecutor executor = new PaperCommandExecutor(invoker);
         PaperCommandBuilder builder = new PaperCommandBuilder(executor);
         PaperCommandRegistry registry = new PaperCommandRegistry(context.logger(), context.lifecycleManager(), builder);

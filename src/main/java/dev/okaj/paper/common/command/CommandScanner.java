@@ -3,7 +3,6 @@ package dev.okaj.paper.common.command;
 import dev.okaj.paper.common.annotation.Command;
 import dev.okaj.paper.common.annotation.CommandHandler;
 import dev.okaj.paper.common.annotation.SubCommand;
-import dev.okaj.paper.common.command.debug.CommandNodeDebugPrinter;
 import dev.okaj.paper.common.command.node.CommandNodeDefinition;
 import dev.okaj.paper.common.command.node.CommandNodeRegistry;
 import dev.okaj.paper.common.logger.PaperLogger;
@@ -14,21 +13,15 @@ public final class CommandScanner {
 
     private final CommandMethodParser parser;
     private final CommandNodeRegistry nodeRegistry;
-    private final PaperLogger logger;
 
-    public CommandScanner(CommandMethodParser parser, CommandNodeRegistry nodeRegistry, PaperLogger logger) {
+    public CommandScanner(CommandMethodParser parser, CommandNodeRegistry nodeRegistry) {
         this.parser = parser;
         this.nodeRegistry = nodeRegistry;
-        this.logger = logger;
     }
 
     public CommandDefinition scan(Object instance) {
         Class<?> clazz = instance.getClass();
         Command annotation = clazz.getAnnotation(Command.class);
-
-        if (annotation == null) {
-            throw new IllegalStateException("Missing @Command");
-        }
 
         CommandDefinition definition = new CommandDefinition(
                 instance,
@@ -49,9 +42,6 @@ public final class CommandScanner {
                 definition.addNode(node);
             }
         }
-
-        CommandNodeDebugPrinter debugPrinter = new CommandNodeDebugPrinter(logger);
-        debugPrinter.print(definition.nodes());
 
         definition.generateUsage();
 

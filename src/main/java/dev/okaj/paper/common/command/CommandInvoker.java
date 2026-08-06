@@ -3,6 +3,7 @@ package dev.okaj.paper.common.command;
 import dev.okaj.paper.common.command.node.CommandNodeRegistry;
 import dev.okaj.paper.common.command.parameter.ParameterDefinition;
 import dev.okaj.paper.common.command.parameter.ParameterResolverRegistry;
+import dev.okaj.paper.common.logger.PaperLogger;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 
 import java.lang.reflect.InvocationTargetException;
@@ -15,10 +16,12 @@ public final class CommandInvoker {
 
     private final ParameterResolverRegistry resolverRegistry;
     private final CommandNodeRegistry nodeRegistry;
+    private final PaperLogger logger;
 
-    public CommandInvoker(ParameterResolverRegistry resolverRegistry, CommandNodeRegistry nodeRegistry) {
+    public CommandInvoker(ParameterResolverRegistry resolverRegistry, CommandNodeRegistry nodeRegistry, PaperLogger logger) {
         this.resolverRegistry = resolverRegistry;
         this.nodeRegistry = nodeRegistry;
+        this.logger = logger;
     }
 
     public boolean invoke(CommandDefinition definition, Method method, CommandContext context, com.mojang.brigadier.context.CommandContext<CommandSourceStack> brigadier) {
@@ -41,7 +44,7 @@ public final class CommandInvoker {
             throw new CommandException("Could not access command method", e);
         } catch (CommandException e) {
             // Parsing Failed
-            System.err.println(e.getMessage()); //todo I NEED A LOGGER!!!
+            logger.error("Parsing Command: " + method.getClass().getName() + " failed.", e);
             return false;
         }
     }
