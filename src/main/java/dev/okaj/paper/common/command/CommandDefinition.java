@@ -67,19 +67,7 @@ public final class CommandDefinition {
 
         CommandNodeDefinition existing = nodes.get(index);
 
-        if (node.hasHandler()) {
-            if (existing.hasHandler()) {
-                throw new CommandException(
-                        "Duplicate command path for node '" + node.name() + "'"
-                );
-            }
-
-            existing.handler(node.handler());
-        }
-
-        for (CommandNodeDefinition child : node.nodes()) {
-            existing.getOrCreateNode(child);
-        }
+        existing.merge(node);
     }
 
     public boolean hasExecute() {

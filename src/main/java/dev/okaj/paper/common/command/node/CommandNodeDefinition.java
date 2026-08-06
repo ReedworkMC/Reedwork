@@ -5,6 +5,7 @@ import dev.okaj.paper.common.command.CommandException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public abstract class CommandNodeDefinition {
 
@@ -36,33 +37,41 @@ public abstract class CommandNodeDefinition {
         return nodes;
     }
 
-    public CommandNodeDefinition findChild(String name) {
-        return nodes.stream().filter(node -> node.name().equals(name)).findFirst().orElse(null);
-    }
-
     public CommandNodeDefinition getOrCreateNode(CommandNodeDefinition node) {
         int index = nodes.indexOf(node);
 
         if (index != -1) {
             CommandNodeDefinition existing = nodes.get(index);
 
-            if (node.hasHandler()) {
-                if (existing.hasHandler()) {
-                    throw new CommandException("Duplicate command path for node '" + node.name() + "'");
-                }
-
-                existing.handler(node.handler());
-            }
-
-            for (CommandNodeDefinition child : node.nodes()) {
-                existing.getOrCreateNode(child);
-            }
+            existing.merge(node);
 
             return existing;
         }
 
         nodes.add(node);
         return node;
+    }
+
+    public void merge(CommandNodeDefinition node) {
+        if (!equals(node)) {
+            throw new IllegalArgumentException(
+                    "Cannot merge different nodes: '" + name + "' and '" + node.name + "'"
+            );
+        }
+
+        if (node.hasHandler()) {
+            if (hasHandler()) {
+                throw new CommandException(
+                        "Duplicate command path for node '" + node.name() + "'"
+                );
+            }
+
+            handler(node.handler());
+        }
+
+        for (CommandNodeDefinition child : node.nodes()) {
+            getOrCreateNode(child);
+        }
     }
 
     public boolean isArgument() {
@@ -83,12 +92,11 @@ public abstract class CommandNodeDefinition {
             return false;
         }
 
-        return isArgument() == other.isArgument()
-                && name.equals(other.name);
+        return getClass() == other.getClass() && name().equals(other.name());
     }
 
     @Override
     public int hashCode() {
-        return name.hashCode() + (isArgument() ? 1 : 0);
+        return Objects.hash(getClass(), name);
     }
 }
