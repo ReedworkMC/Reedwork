@@ -3,8 +3,10 @@ package dev.okaj.paper.common.command;
 import dev.okaj.paper.common.annotation.Command;
 import dev.okaj.paper.common.annotation.CommandHandler;
 import dev.okaj.paper.common.annotation.SubCommand;
+import dev.okaj.paper.common.command.debug.CommandNodeDebugPrinter;
 import dev.okaj.paper.common.command.node.CommandNodeDefinition;
 import dev.okaj.paper.common.command.node.CommandNodeRegistry;
+import dev.okaj.paper.common.logger.PaperLogger;
 
 import java.lang.reflect.Method;
 
@@ -12,10 +14,12 @@ public final class CommandScanner {
 
     private final CommandMethodParser parser;
     private final CommandNodeRegistry nodeRegistry;
+    private final PaperLogger logger;
 
-    public CommandScanner(CommandMethodParser parser, CommandNodeRegistry nodeRegistry) {
+    public CommandScanner(CommandMethodParser parser, CommandNodeRegistry nodeRegistry, PaperLogger logger) {
         this.parser = parser;
         this.nodeRegistry = nodeRegistry;
+        this.logger = logger;
     }
 
     public CommandDefinition scan(Object instance) {
@@ -45,6 +49,9 @@ public final class CommandScanner {
                 definition.addNode(node);
             }
         }
+
+        CommandNodeDebugPrinter debugPrinter = new CommandNodeDebugPrinter(logger);
+        debugPrinter.print(definition.nodes());
 
         definition.generateUsage();
 

@@ -31,6 +31,7 @@ public final class CommandModule implements PaperModule {
                         context.injector(),
                         registry,
                         parameters,
+                        context.logger(),
                         nodeRegistry
                 )
         );

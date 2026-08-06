@@ -58,7 +58,28 @@ public final class CommandDefinition {
     }
 
     public void addNode(CommandNodeDefinition node) {
-        nodes.add(node);
+        int index = nodes.indexOf(node);
+
+        if (index == -1) {
+            nodes.add(node);
+            return;
+        }
+
+        CommandNodeDefinition existing = nodes.get(index);
+
+        if (node.hasHandler()) {
+            if (existing.hasHandler()) {
+                throw new CommandException(
+                        "Duplicate command path for node '" + node.name() + "'"
+                );
+            }
+
+            existing.handler(node.handler());
+        }
+
+        for (CommandNodeDefinition child : node.nodes()) {
+            existing.getOrCreateNode(child);
+        }
     }
 
     public boolean hasExecute() {

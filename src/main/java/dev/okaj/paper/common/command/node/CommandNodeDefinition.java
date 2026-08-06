@@ -1,5 +1,7 @@
 package dev.okaj.paper.common.command.node;
 
+import dev.okaj.paper.common.command.CommandException;
+
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,20 +36,31 @@ public abstract class CommandNodeDefinition {
         return nodes;
     }
 
-    public void addNode(CommandNodeDefinition node) {
-        nodes.add(node);
-    }
-
     public CommandNodeDefinition findChild(String name) {
         return nodes.stream().filter(node -> node.name().equals(name)).findFirst().orElse(null);
     }
 
-    public CommandNodeDefinition getOrCreateLiteral(String name) {
-        CommandNodeDefinition existing = findChild(name);
-        if (existing != null) {
+    public CommandNodeDefinition getOrCreateNode(CommandNodeDefinition node) {
+        int index = nodes.indexOf(node);
+
+        if (index != -1) {
+            CommandNodeDefinition existing = nodes.get(index);
+
+            if (node.hasHandler()) {
+                if (existing.hasHandler()) {
+                    throw new CommandException("Duplicate command path for node '" + node.name() + "'");
+                }
+
+                existing.handler(node.handler());
+            }
+
+            for (CommandNodeDefinition child : node.nodes()) {
+                existing.getOrCreateNode(child);
+            }
+
             return existing;
         }
-        CommandNodeDefinition node = new LiteralNodeDefinition(name);
+
         nodes.add(node);
         return node;
     }
@@ -58,5 +71,24 @@ public abstract class CommandNodeDefinition {
 
     public boolean isLiteral() {
         return this instanceof LiteralNodeDefinition;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (!(obj instanceof CommandNodeDefinition other)) {
+            return false;
+        }
+
+        return isArgument() == other.isArgument()
+                && name.equals(other.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return name.hashCode() + (isArgument() ? 1 : 0);
     }
 }

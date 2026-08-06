@@ -2,7 +2,7 @@ package dev.okaj.paper.common.command.node;
 
 import com.mojang.brigadier.arguments.ArgumentType;
 
-public class ArgumentNodeDefinition extends CommandNodeDefinition{
+public class ArgumentNodeDefinition extends CommandNodeDefinition {
 
     private final ArgumentType<?> argumentType;
 

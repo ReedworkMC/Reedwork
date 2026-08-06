@@ -66,10 +66,10 @@ public final class CommandMethodParser {
 
             if (root == null) {
                 root = node;
+                current = root;
             } else {
-                current.addNode(node);
+                current = current.getOrCreateNode(node);
             }
-            current = node;
         }
 
         if (root == null) {
