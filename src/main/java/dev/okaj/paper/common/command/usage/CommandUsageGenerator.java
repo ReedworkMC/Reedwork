@@ -23,8 +23,8 @@ public final class CommandUsageGenerator {
             return;
         }
 
-        Map<String, List<CommandNodeDefinition>> grouped = nodes.stream()
-                .collect(Collectors.groupingBy(this::nodeKey));
+        Map<CommandNodeDefinition, List<CommandNodeDefinition>> grouped = nodes.stream()
+                .collect(Collectors.groupingBy(node -> node));
 
         for (List<CommandNodeDefinition> group : grouped.values()) {
             appendGroup(builder, group);
@@ -54,30 +54,22 @@ public final class CommandUsageGenerator {
             return;
         }
 
-        Map<String, List<CommandNodeDefinition>> grouped =
+        Map<CommandNodeDefinition, List<CommandNodeDefinition>> grouped =
                 children.stream()
-                        .collect(Collectors.groupingBy(this::nodeKey));
+                        .collect(Collectors.groupingBy(node -> node));
 
         if (grouped.size() > 1) {
-            builder.append(" (");
-
-            builder.append(
-                    grouped.values().stream()
+            builder.append(" (")
+                    .append(grouped.values().stream()
                             .map(List::getFirst)
                             .map(this::nodeName)
-                            .collect(Collectors.joining("|"))
-            );
-
-            builder.append(")");
+                            .collect(Collectors.joining(" | ")))
+                    .append(")");
 
             return;
         }
 
         appendNodes(builder, children);
-    }
-
-    private String nodeKey(CommandNodeDefinition node) {
-        return (node.isArgument() ? "ARG:" : "LIT:") + node.name();
     }
 
     private String nodeName(CommandNodeDefinition node) {
