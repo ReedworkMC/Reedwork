@@ -74,6 +74,32 @@ public abstract class CommandNodeDefinition {
         }
     }
 
+    public List<CommandNodeDefinition> argumentNodes() {
+        List<CommandNodeDefinition> result = new ArrayList<>();
+
+        for (CommandNodeDefinition node : nodes) {
+            if (node.isArgument()) {
+                result.add(node);
+            }
+
+            result.addAll(node.argumentNodes());
+        }
+
+        return result;
+    }
+
+    public CommandNodeDefinition getArgumentNode(int index) {
+        List<CommandNodeDefinition> arguments = argumentNodes();
+
+        if (index >= arguments.size()) {
+            throw new CommandException(
+                    "No argument node available at index " + index
+            );
+        }
+
+        return arguments.get(index);
+    }
+
     public boolean isArgument() {
         return this instanceof ArgumentNodeDefinition;
     }
@@ -98,5 +124,33 @@ public abstract class CommandNodeDefinition {
     @Override
     public int hashCode() {
         return Objects.hash(getClass(), name);
+    }
+
+    @Override
+    public String toString() {
+        return toString("");
+    }
+
+    private String toString(String indent) {
+        StringBuilder builder = new StringBuilder();
+
+        builder.append(indent)
+                .append(isArgument() ? "<" + name + ">" : name);
+
+        if (hasHandler()) {
+            builder.append(" [")
+                    .append(handler.getDeclaringClass().getSimpleName())
+                    .append("#")
+                    .append(handler.getName())
+                    .append("]");
+        }
+
+        builder.append("\n");
+
+        for (CommandNodeDefinition node : nodes) {
+            builder.append(node.toString(indent + "  "));
+        }
+
+        return builder.toString();
     }
 }

@@ -1,6 +1,7 @@
 package dev.okaj.paper.common.command.node;
 
 import dev.okaj.paper.common.command.CommandException;
+import dev.okaj.paper.common.logger.PaperLogger;
 
 import java.lang.reflect.Method;
 import java.util.HashMap;
@@ -34,5 +35,15 @@ public final class CommandNodeRegistry {
 
     public void clear() {
         handlers.clear();
+    }
+
+    public void dump(PaperLogger logger) {
+        handlers.forEach((method, node) -> {
+            logger.info("=== Command Handler ===");
+            logger.info("Method: " + method);
+            logger.info("Class: " + method.getDeclaringClass().getName());
+            logger.info("Node: " + node);
+            logger.info("\n");
+        });
     }
 }

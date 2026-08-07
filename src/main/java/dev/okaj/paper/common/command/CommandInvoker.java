@@ -1,5 +1,6 @@
 package dev.okaj.paper.common.command;
 
+import dev.okaj.paper.common.command.node.CommandNodeDefinition;
 import dev.okaj.paper.common.command.node.CommandNodeRegistry;
 import dev.okaj.paper.common.command.parameter.ParameterDefinition;
 import dev.okaj.paper.common.command.parameter.ParameterResolverRegistry;
@@ -52,14 +53,24 @@ public final class CommandInvoker {
     private Object[] resolveParameters(Method method, CommandContext context, com.mojang.brigadier.context.CommandContext<CommandSourceStack> brigadier) {
         Parameter[] parameters = method.getParameters();
 
+        nodeRegistry.dump(logger);
+
+        CommandNodeDefinition rootNode = nodeRegistry.get(method);
+
+        AtomicInteger argumentIndex = new AtomicInteger();
+
         return Arrays.stream(parameters)
                 .map(parameter -> {
                     if (parameter.getType().equals(CommandContext.class)) {
                         return context;
                     }
 
+                    CommandNodeDefinition argumentNode = rootNode.getArgumentNode(argumentIndex.getAndIncrement());
+
+                    logger.info("Selected Node: " + argumentNode);
+
                     return resolverRegistry.resolve(parameter)
-                            .resolve(context, brigadier, nodeRegistry.get(method));
+                            .resolve(context, brigadier, argumentNode);
 
                 })
                 .toArray();
