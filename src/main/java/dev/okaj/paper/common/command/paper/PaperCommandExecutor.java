@@ -36,7 +36,13 @@ public final class PaperCommandExecutor {
 
         boolean success = invoker.invoke(definition, method, commandContext, context);
         if (!success) {
-            context.getSource().getSender().sendMessage(Component.text("Usage: " + definition.usage(), NamedTextColor.RED));
+
+            Component message = commandContext.errorMessage();
+
+            if (message == null) {
+                message = Component.text("Usage: " + definition.usage(), NamedTextColor.RED);
+            }
+            context.getSource().getSender().sendMessage(message);
             return false;
         }
 

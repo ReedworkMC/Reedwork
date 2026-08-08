@@ -12,6 +12,7 @@ public final class CommandContext {
     private static final Component PLAYER_ONLY = Component.text("This command can only be executed by players.", NamedTextColor.RED);
     private final CommandSourceStack source;
     private final CommandArguments arguments;
+    private Component errorMessage;
 
     public CommandContext(CommandSourceStack source, CommandArguments arguments) {
         this.source = source;
@@ -49,5 +50,13 @@ public final class CommandContext {
 
     public boolean isPlayer() {
         return sender() instanceof Player;
+    }
+
+    public Component errorMessage() {
+        return errorMessage;
+    }
+
+    public void errorMessage(Component message) {
+        this.errorMessage = message;
     }
 }
