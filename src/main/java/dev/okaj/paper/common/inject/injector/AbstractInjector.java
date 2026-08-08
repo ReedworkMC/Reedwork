@@ -31,15 +31,15 @@ public abstract class AbstractInjector implements InjectorDependencyProvider {
     }
 
     public void scan(String packageName) {
+        logger.info(String.format("Scanning package %s", packageName));
         List<Class<?>> classes = scanner.scan(packageName);
 
-        for (Class<?> clazz : classes) {
-            logger.info("Found: " + clazz.getName());
-        }
+        logger.info(String.format("Found %d classes", classes.size()));
 
         for (ClassProcessor processor : processors) {
             processor.process(classes);
         }
+        logger.info(String.format("Finished processing %d classes", classes.size()));
     }
 
     @Override

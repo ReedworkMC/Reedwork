@@ -65,8 +65,6 @@ public final class CommandInvoker {
 
                     CommandNodeDefinition argumentNode = handlerNode.getArgumentNode(argumentIndex.getAndIncrement());
 
-                    logger.info("Selected Node: " + argumentNode);
-
                     return resolverRegistry.resolve(parameter)
                             .resolve(context, brigadier, argumentNode);
 
