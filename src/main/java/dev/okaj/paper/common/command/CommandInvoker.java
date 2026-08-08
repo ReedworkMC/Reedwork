@@ -1,7 +1,6 @@
 package dev.okaj.paper.common.command;
 
 import dev.okaj.paper.common.command.node.CommandNodeDefinition;
-import dev.okaj.paper.common.command.node.CommandNodeRegistry;
 import dev.okaj.paper.common.command.parameter.ParameterResolverRegistry;
 import dev.okaj.paper.common.logger.PaperLogger;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
@@ -15,12 +14,10 @@ import java.util.concurrent.atomic.AtomicInteger;
 public final class CommandInvoker {
 
     private final ParameterResolverRegistry resolverRegistry;
-    private final CommandNodeRegistry nodeRegistry;
     private final PaperLogger logger;
 
-    public CommandInvoker(ParameterResolverRegistry resolverRegistry, CommandNodeRegistry nodeRegistry, PaperLogger logger) {
+    public CommandInvoker(ParameterResolverRegistry resolverRegistry, PaperLogger logger) {
         this.resolverRegistry = resolverRegistry;
-        this.nodeRegistry = nodeRegistry;
         this.logger = logger;
     }
 

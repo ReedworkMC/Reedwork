@@ -4,7 +4,6 @@ import dev.okaj.paper.common.app.context.ApplicationContext;
 import dev.okaj.paper.common.command.CommandInvoker;
 import dev.okaj.paper.common.command.CommandProcessor;
 import dev.okaj.paper.common.command.cooldown.CommandCooldownService;
-import dev.okaj.paper.common.command.node.CommandNodeRegistry;
 import dev.okaj.paper.common.command.paper.PaperCommandBuilder;
 import dev.okaj.paper.common.command.paper.PaperCommandExecutor;
 import dev.okaj.paper.common.command.paper.PaperCommandRegistry;
@@ -20,11 +19,9 @@ public final class CommandModule implements PaperModule {
         ParameterResolverRegistry parameters = new ParameterResolverRegistry();
         DefaultParameterResolvers.register(parameters);
 
-        CommandNodeRegistry nodeRegistry = new CommandNodeRegistry();
-
         CommandCooldownService cooldownService = new CommandCooldownService();
 
-        CommandInvoker invoker = new CommandInvoker(parameters, nodeRegistry, context.logger());
+        CommandInvoker invoker = new CommandInvoker(parameters, context.logger());
         PaperCommandExecutor executor = new PaperCommandExecutor(invoker, cooldownService);
         PaperCommandBuilder builder = new PaperCommandBuilder(executor);
         PaperCommandRegistry registry = new PaperCommandRegistry(context.logger(), context.lifecycleManager(), builder);
@@ -34,8 +31,7 @@ public final class CommandModule implements PaperModule {
                         context.injector(),
                         registry,
                         parameters,
-                        context.logger(),
-                        nodeRegistry
+                        context.logger()
                 )
         );
     }

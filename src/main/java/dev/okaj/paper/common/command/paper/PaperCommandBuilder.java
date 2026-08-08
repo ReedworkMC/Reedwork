@@ -7,8 +7,6 @@ import com.mojang.brigadier.tree.LiteralCommandNode;
 import dev.okaj.paper.common.command.CommandDefinition;
 import dev.okaj.paper.common.command.node.ArgumentNodeDefinition;
 import dev.okaj.paper.common.command.node.CommandNodeDefinition;
-import dev.okaj.paper.common.command.node.CommandNodeRegistry;
-import dev.okaj.paper.common.logger.PaperLogger;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 
