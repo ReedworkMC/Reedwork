@@ -77,11 +77,11 @@ public abstract class CommandNodeDefinition {
     public List<CommandNodeDefinition> argumentNodes() {
         List<CommandNodeDefinition> result = new ArrayList<>();
 
-        for (CommandNodeDefinition node : nodes) {
-            if (node.isArgument()) {
-                result.add(node);
-            }
+        if (isArgument()) {
+            result.add(this);
+        }
 
+        for (CommandNodeDefinition node : nodes) {
             result.addAll(node.argumentNodes());
         }
 
