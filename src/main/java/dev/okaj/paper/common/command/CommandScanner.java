@@ -28,11 +28,19 @@ public final class CommandScanner {
                 CommandMetadata.of(annotation)
         );
 
+        boolean handlerFound = false;
+
         for (Method method : clazz.getDeclaredMethods()) {
 
             if (method.isAnnotationPresent(CommandHandler.class)) {
+                if(handlerFound){
+                    throw new CommandException("CommandHandler can only be declared once: " + clazz.getName());
+                }
+
                 validate(method);
                 definition.execute(method);
+
+                handlerFound = true;
             }
 
             if (method.isAnnotationPresent(SubCommand.class)) {

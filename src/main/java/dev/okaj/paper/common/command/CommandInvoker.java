@@ -2,7 +2,6 @@ package dev.okaj.paper.common.command;
 
 import dev.okaj.paper.common.command.node.CommandNodeDefinition;
 import dev.okaj.paper.common.command.node.CommandNodeRegistry;
-import dev.okaj.paper.common.command.parameter.ParameterDefinition;
 import dev.okaj.paper.common.command.parameter.ParameterResolverRegistry;
 import dev.okaj.paper.common.logger.PaperLogger;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
@@ -27,7 +26,7 @@ public final class CommandInvoker {
 
     public boolean invoke(CommandDefinition definition, Method method, CommandContext context, com.mojang.brigadier.context.CommandContext<CommandSourceStack> brigadier) {
         try {
-            Object[] parameters = resolveParameters(method, context, brigadier);
+            Object[] parameters = resolveParameters(definition, method, context, brigadier);
 
             method.setAccessible(true);
 
@@ -50,12 +49,10 @@ public final class CommandInvoker {
         }
     }
 
-    private Object[] resolveParameters(Method method, CommandContext context, com.mojang.brigadier.context.CommandContext<CommandSourceStack> brigadier) {
+    private Object[] resolveParameters(CommandDefinition definition, Method method, CommandContext context, com.mojang.brigadier.context.CommandContext<CommandSourceStack> brigadier) {
         Parameter[] parameters = method.getParameters();
 
-        nodeRegistry.dump(logger);
-
-        CommandNodeDefinition rootNode = nodeRegistry.get(method);
+        CommandNodeDefinition handlerNode = definition.execute() == method ? null : definition.node(method);
 
         AtomicInteger argumentIndex = new AtomicInteger();
 
@@ -65,7 +62,11 @@ public final class CommandInvoker {
                         return context;
                     }
 
-                    CommandNodeDefinition argumentNode = rootNode.getArgumentNode(argumentIndex.getAndIncrement());
+                    if (handlerNode == null) {
+                        throw new CommandException("CommandHandler cannot have command arguments: " + method);
+                    }
+
+                    CommandNodeDefinition argumentNode = handlerNode.getArgumentNode(argumentIndex.getAndIncrement());
 
                     logger.info("Selected Node: " + argumentNode);
 
