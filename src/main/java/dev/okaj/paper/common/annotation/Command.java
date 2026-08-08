@@ -19,4 +19,6 @@ public @interface Command {
     String usage() default "";
 
     String[] aliases() default {};
+
+    long cooldown() default 0;
 }

@@ -45,6 +45,10 @@ public final class CommandDefinition {
         return metadata.aliases();
     }
 
+    public long cooldown() {
+        return metadata.cooldown();
+    }
+
     public Method execute() {
         return execute;
     }

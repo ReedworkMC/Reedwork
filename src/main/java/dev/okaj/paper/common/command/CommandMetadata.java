@@ -9,6 +9,7 @@ public final class CommandMetadata {
     private String permission;
     private String usage;
     private String[] aliases;
+    private long cooldown;
 
     static CommandMetadata of(Command cmd) {
         CommandMetadata meta = new CommandMetadata();
@@ -17,6 +18,7 @@ public final class CommandMetadata {
         meta.permission = cmd.permission();
         meta.usage = cmd.usage();
         meta.aliases = cmd.aliases();
+        meta.cooldown = cmd.cooldown();
         return meta;
     }
 
@@ -38,5 +40,9 @@ public final class CommandMetadata {
 
     public String[] aliases() {
         return aliases;
+    }
+
+    public long cooldown() {
+        return cooldown;
     }
 }
