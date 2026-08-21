@@ -1,11 +1,13 @@
 package dev.okaj.paper.common.command;
 
 import dev.okaj.paper.common.annotation.SubCommand;
+import dev.okaj.paper.common.annotation.Suggest;
 import dev.okaj.paper.common.command.node.ArgumentNodeDefinition;
 import dev.okaj.paper.common.command.node.CommandNodeDefinition;
 import dev.okaj.paper.common.command.node.LiteralNodeDefinition;
 import dev.okaj.paper.common.command.parameter.ParameterDefinition;
 import dev.okaj.paper.common.command.parameter.ParameterResolverRegistry;
+import dev.okaj.paper.common.command.parameter.ParameterSuggestion;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
@@ -56,10 +58,14 @@ public final class CommandMethodParser {
 
                 ParameterDefinition definition = new ParameterDefinition(parameter, argumentIndex++, argumentCount);
 
+                ParameterSuggestion suggestion = createSuggestion(parameter);
+
                 node = new ArgumentNodeDefinition(
                         argumentName,
-                        registry.resolve(parameter).argumentType(definition)
+                        registry.resolve(parameter).argumentType(definition),
+                        suggestion
                 );
+
             } else {
                 node = new LiteralNodeDefinition(part);
             }
@@ -79,6 +85,16 @@ public final class CommandMethodParser {
         current.handler(method);
 
         return root;
+    }
+
+    private ParameterSuggestion createSuggestion(Parameter parameter) {
+        Suggest suggest = parameter.getAnnotation(Suggest.class);
+
+        if (suggest == null) {
+            return null;
+        }
+
+        return new ParameterSuggestion(suggest.value());
     }
 
     private boolean isArgument(String value) {

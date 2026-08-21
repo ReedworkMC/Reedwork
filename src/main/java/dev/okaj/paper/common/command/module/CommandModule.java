@@ -23,7 +23,7 @@ public final class CommandModule implements PaperModule {
 
         CommandInvoker invoker = new CommandInvoker(parameters, context.logger());
         PaperCommandExecutor executor = new PaperCommandExecutor(invoker, cooldownService);
-        PaperCommandBuilder builder = new PaperCommandBuilder(executor);
+        PaperCommandBuilder builder = new PaperCommandBuilder(executor, context.injector());
         PaperCommandRegistry registry = new PaperCommandRegistry(context.logger(), context.lifecycleManager(), builder);
 
         context.injector().addProcessor(

@@ -7,15 +7,18 @@ import com.mojang.brigadier.tree.LiteralCommandNode;
 import dev.okaj.paper.common.command.CommandDefinition;
 import dev.okaj.paper.common.command.node.ArgumentNodeDefinition;
 import dev.okaj.paper.common.command.node.CommandNodeDefinition;
+import dev.okaj.paper.common.inject.injector.InjectorDependencyProvider;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 
 public final class PaperCommandBuilder {
 
     private final PaperCommandExecutor executor;
+    private final InjectorDependencyProvider injector;
 
-    public PaperCommandBuilder(PaperCommandExecutor executor) {
+    public PaperCommandBuilder(PaperCommandExecutor executor, InjectorDependencyProvider injector) {
         this.executor = executor;
+        this.injector = injector;
     }
 
     public LiteralCommandNode<CommandSourceStack> build(CommandDefinition definition) {
@@ -46,7 +49,13 @@ public final class PaperCommandBuilder {
         ArgumentBuilder<CommandSourceStack, ?> builder;
 
         if (node instanceof ArgumentNodeDefinition argument) {
-            builder = Commands.argument(argument.name(), argument.argumentType());
+            var argumentBuilder = Commands.argument(argument.name(), argument.argumentType());
+
+            if (argument.hasSuggestion()) {
+                argumentBuilder.suggests(argument.suggestion().resolve(injector));
+            }
+
+            builder = argumentBuilder;
         } else {
             builder = Commands.literal(node.name());
         }
