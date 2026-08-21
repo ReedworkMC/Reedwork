@@ -49,7 +49,7 @@ public final class CommandInvoker {
     private Object[] resolveParameters(CommandDefinition definition, Method method, CommandContext context, com.mojang.brigadier.context.CommandContext<CommandSourceStack> brigadier) {
         Parameter[] parameters = method.getParameters();
 
-        CommandNodeDefinition handlerNode = definition.execute() == method ? null : definition.node(method);
+        CommandNodeDefinition handlerNode = definition.execute() == method ? null : definition.rootNode(method);
 
         AtomicInteger argumentIndex = new AtomicInteger();
 

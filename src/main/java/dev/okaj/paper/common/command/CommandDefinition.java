@@ -74,28 +74,28 @@ public final class CommandDefinition {
         existing.merge(node);
     }
 
-    public CommandNodeDefinition node(Method method) {
+    public CommandNodeDefinition rootNode(Method method) {
         for (CommandNodeDefinition node : nodes) {
-            CommandNodeDefinition result = findNode(node, method);
-            if (result != null) {
-                return result;
+            if (containsHandler(node, method)) {
+                return node;
             }
         }
+
         throw new CommandException("No command node registered for method " + method);
     }
 
-    private CommandNodeDefinition findNode(CommandNodeDefinition node, Method method) {
+    private boolean containsHandler(CommandNodeDefinition node, Method method) {
         if (node.handler() == method) {
-            return node;
+            return true;
         }
 
         for (CommandNodeDefinition child : node.nodes()) {
-            CommandNodeDefinition result = findNode(child, method);
-            if (result != null) {
-                return result;
+            if (containsHandler(child, method)) {
+                return true;
             }
         }
-        return null;
+
+        return false;
     }
 
     public boolean hasExecute() {
