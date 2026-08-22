@@ -66,7 +66,40 @@ simplified API operations.
 
 ## Installation
 
-Installation instructions will be available soon.
+Download the latest release of Reedwork from the [GitHub Releases](https://github.com/ReedworkMC/Reedwork/releases/latest) page.
+Copy the downloaded JAR into the `libs` directory of your plugin project:
+
+```text
+my-plugin/
+├── libs/
+│   └── reedwork-4.0.0.jar
+├── src/
+└── ...
+```
+
+### Maven
+
+Add Reedwork as a local dependency in your `pom.xml`:
+
+```xml
+<dependency>
+    <groupId>dev.reedworkmc</groupId>
+    <artifactId>reedwork</artifactId>
+    <version>4.0.0</version>
+    <scope>system</scope>
+    <systemPath>${project.basedir}/libs/reedwork-4.0.0.jar</systemPath>
+</dependency>
+```
+
+### Gradle
+
+Add Reedwork as a local dependency in your `build.gradle`:
+
+```groovy
+dependencies {
+    implementation(files("libs/reedwork-4.0.0.jar"))
+}
+```
 
 ---
 
