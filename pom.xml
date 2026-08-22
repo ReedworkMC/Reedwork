@@ -4,11 +4,11 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>dev.okaj.paper</groupId>
-    <artifactId>common</artifactId>
+    <groupId>dev.reedworkmc</groupId>
+    <artifactId>reedwork</artifactId>
     <version>3.3.0</version>
 
-    <name>PaperCommon</name>
+    <name>Reedwork</name>
 
     <properties>
         <java.version>25</java.version>
@@ -38,22 +38,7 @@
             <id>opencollab-snapshot</id>
             <url>https://repo.opencollab.dev/main/</url>
         </repository>
-        <repository>
-            <id>gitea</id>
-            <url>https://192.168.178.55:3000/api/packages/PaperMinecraft/maven</url>
-        </repository>
     </repositories>
-
-    <distributionManagement>
-        <repository>
-            <id>gitea</id>
-            <url>https://192.168.178.55:3000/api/packages/PaperMinecraft/maven</url>
-        </repository>
-        <snapshotRepository>
-            <id>gitea</id>
-            <url>https://192.168.178.55:3000/api/packages/PaperMinecraft/maven</url>
-        </snapshotRepository>
-    </distributionManagement>
 
     <dependencies>
         <dependency>
