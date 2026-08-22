@@ -2,6 +2,10 @@
 
 A modern framework for building PaperMC plugins with less boilerplate.
 
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for information about contributing to Reedwork.
+
 ## License
 
 Copyright (c) 2026-present 0kAj
