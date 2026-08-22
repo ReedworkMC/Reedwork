@@ -1,6 +1,9 @@
-# Reedwork
-
-A modern framework for building PaperMC plugins with less boilerplate.
+<div align="center">
+    <h1>🌱 Reedwork</h1>
+    <p>
+        <strong>A modern framework for building PaperMC plugins with less boilerplate.</strong>
+    </p>
+</div>
 
 ---
 
@@ -83,7 +86,6 @@ public final class MyFirstReedworkPlugin extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        // Plugin startup logic
         Reedwork.create(this).scan("dev.reedworkmc.example");
     }
 }
@@ -161,7 +163,6 @@ public final class MyFirstReedworkPluginBootstrap implements PluginBootstrap {
 
     @Override
     public void bootstrap(final BootstrapContext context) {
-        // Plugin bootstrap logic
         Reedwork.bootstrap(context).scan("dev.reedworkmc.example");
     }
 }
@@ -183,6 +184,8 @@ import org.bukkit.inventory.ItemType;
 
 @Enchantment("Reedwork Power")
 public final class ReedworkEnchantment implements CustomEnchantment {
+    
+    @Override
     public Component description() {
         return Component.text("The power of Reedwork");
     }
