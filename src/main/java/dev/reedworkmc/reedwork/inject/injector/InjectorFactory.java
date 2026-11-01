@@ -8,6 +8,7 @@ import dev.reedworkmc.reedwork.inject.scanner.ClassScanner;
 import dev.reedworkmc.reedwork.inject.exception.DependencyException;
 import dev.reedworkmc.reedwork.inject.registry.ServiceRegistry;
 import io.papermc.paper.plugin.bootstrap.BootstrapContext;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -27,6 +28,7 @@ public final class InjectorFactory {
                 plugin
         );
 
+        injector.registry.register(new ServiceKey(Plugin.class, ""), new SingletonProvider<>(plugin));
         injector.registry.register(new ServiceKey(JavaPlugin.class, ""), new SingletonProvider<>(plugin));
         injector.registry.register(new ServiceKey(plugin.getClass(), ""), new SingletonProvider<>(plugin));
 
